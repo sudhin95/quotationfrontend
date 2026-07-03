@@ -7,7 +7,11 @@ export const environment = {
 
   enableLogs: true,
 
-  loginApiUrl: 'api/v1/login',
+  loginApiUrl: 'api/v1/auth',
+  clientsApiUrl: 'api/v1/clients',
+  quotationsApiUrl: 'api/v1/quotations'
+
+
 
 
 };

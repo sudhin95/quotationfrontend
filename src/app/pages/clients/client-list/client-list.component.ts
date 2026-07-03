@@ -34,6 +34,8 @@ export class ClientListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+
     this.loadClients();
   }
 
@@ -42,8 +44,11 @@ export class ClientListComponent implements OnInit {
    */
   loadClients(): void {
     this.isLoading = true;
-    this.clientsService.getClients().subscribe(clients => {
-      this.clients = clients;
+    this.clientsService.getClients().subscribe((data:any) => {
+      console.log('Fetched clients:', data);
+      if(data && data.body && Array.isArray(data.body)) {
+        this.clients = data.body;
+      }
       this.applyFilter();
       this.isLoading = false;
     });
@@ -53,9 +58,11 @@ export class ClientListComponent implements OnInit {
    * Filter the client list by name, company, or email.
    */
   applyFilter(): void {
+    console.log('Filtering clients with term:', this.clients);
     const term = this.searchTerm.toLowerCase().trim();
     if (!term) {
       this.filteredClients = [...this.clients];
+      console.log("dgfd", this.filteredClients);
       return;
     }
 
@@ -77,7 +84,7 @@ export class ClientListComponent implements OnInit {
    * Navigate to the edit form for a specific client.
    */
   editClient(client: Client): void {
-    this.router.navigate(['/clients/edit', client.id]);
+    this.router.navigate(['/clients/edit', client.clientid]);
   }
 
   /**
@@ -93,10 +100,9 @@ export class ClientListComponent implements OnInit {
    */
   deleteClient(): void {
     if (!this.clientToDelete) return;
-
-    this.clientsService.deleteClient(this.clientToDelete.id).subscribe(success => {
-      if (success) {
-        this.showNotification('Client deleted successfully', 'success');
+    this.clientsService.deleteClient(this.clientToDelete.clientid).subscribe((data:any) => {
+      if (data && data.header && data.header.return_status === true ) {
+        this.showNotification(data.header.return_message, 'success');
         this.loadClients();
       } else {
         this.showNotification('Failed to delete client', 'error');

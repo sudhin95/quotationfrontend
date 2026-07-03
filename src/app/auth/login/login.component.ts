@@ -18,6 +18,8 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   errorMessage = '';
   isLoading = false;
+  private readonly STORAGE_KEY = 'auth_token';
+
 
   constructor(
     private fb: FormBuilder,
@@ -61,6 +63,7 @@ export class LoginComponent implements OnInit {
         var res = data.body;
         this.isLoading = false;
         if (res.return_status==true) {
+          localStorage.setItem('authKey', res.auth_token);
           console.log('Login successful, navigating to dashboard');
           this.router.navigate(['/dashboard']);
         } else {

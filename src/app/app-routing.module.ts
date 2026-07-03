@@ -22,6 +22,10 @@ const routes: Routes = [
         path: 'clients',
         loadChildren: () => import('./pages/clients/clients.module').then(m => m.ClientsModule)
       },
+       {
+        path: 'quotations',
+        loadChildren: () => import('./pages/quotations/quotations.module').then(m => m.QuotationsModule  )
+      },
       // Default redirect
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

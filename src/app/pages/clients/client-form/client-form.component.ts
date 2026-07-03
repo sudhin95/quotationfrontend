@@ -36,6 +36,7 @@ export class ClientFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    console.log('ClientFormComponent initialized');
 
     // Check if we're in edit mode by looking for an :id param
     const id = this.route.snapshot.paramMap.get('id');
@@ -63,24 +64,27 @@ export class ClientFormComponent implements OnInit {
   /**
    * Load existing client data for editing.
    */
+  clients:any;
   private loadClient(id: string): void {
+    console.log('Loading client for edit, ID:', id);
     this.isLoading = true;
-    this.clientsService.getClient(id).subscribe(client => {
+    this.clientsService.getClient(id).subscribe((data:any) => {
+      console.log('Fetched client data:', data);
       this.isLoading = false;
+      this.clients = data.body[0];
 
-      if (!client) {
+      if (this.clients.length === 0) {
         this.showNotification('Client not found', 'error');
         this.router.navigate(['/clients']);
         return;
       }
-
       // Patch the form with existing values
       this.clientForm.patchValue({
-        name: client.name,
-        company: client.company,
-        email: client.email,
-        phone: client.phone,
-        notes: client.notes
+        name: this.clients.name,
+        company: this.clients.company,
+        email: this.clients.email,
+        phone: this.clients.phone,
+        notes: this.clients.notes
       });
     });
   }
@@ -94,34 +98,32 @@ export class ClientFormComponent implements OnInit {
     if (this.clientForm.invalid) {
       return;
     }
-
     this.isSaving = true;
     const formData = this.clientForm.value;
-
+    console.log('Submitting form data:', formData, 'Edit mode:', this.isEditMode);
     if (this.isEditMode) {
       // Update existing client
       this.clientsService.updateClient(this.clientId, formData).subscribe(updated => {
         this.isSaving = false;
         if (updated) {
           this.showNotification('Client updated successfully', 'success');
-          setTimeout(() => this.router.navigate(['/clients']), 800);
+          setTimeout(() => this.router.navigate(['/clients']), 1500);
         } else {
           this.showNotification('Failed to update client', 'error');
         }
       });
     } else {
       // Create new client
-      this.clientsService.createClient(formData).subscribe(() => {
+      this.clientsService.createClient(formData).subscribe((data:any) => {
         this.isSaving = false;
-        this.showNotification('Client created successfully', 'success');
-        setTimeout(() => this.router.navigate(['/clients']), 800);
+        console.log('Client created:', data);
+        this.showNotification(data.header.return_message, 'success');
+        setTimeout(() => this.router.navigate(['/clients']), 1500);
       });
     }
   }
 
-  /**
-   * Navigate back to the client list without saving.
-   */
+ 
   cancel(): void {
     this.router.navigate(['/clients']);
   }

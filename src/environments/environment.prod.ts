@@ -8,6 +8,10 @@
   enableLogs: true,
 
   loginApiUrl: 'api/v1/login',
+  clientsApiUrl: 'api/v1/clients',
+  quotationsApiUrl: 'api/v1/quotations'
+
+
 
 
 };

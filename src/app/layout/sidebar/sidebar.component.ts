@@ -33,7 +33,7 @@ export class SidebarComponent {
       label: 'Quotations',
       route: '/quotations',
       icon: 'quotations',
-      disabled: true  // Coming in a future phase
+      disabled: false  // Coming in a future phase
     }
   ];
 

@@ -6,16 +6,15 @@ import { environment } from 'src/environments/environment.prod';
 @Injectable({
   providedIn: 'root'
 })
-export class ClientsService {
-
+export class QuotationsService {
 
   constructor(private http: HttpClient) { }
 
-  getClients(): Observable<Array<any>> {
+  getQuotations(): Observable<Array<any>> {
     var sessionId = localStorage.getItem('authKey');
     var userId = localStorage.getItem('userId');
     const postUrl =
-      environment.apiUrl +environment.clientsApiUrl + '/';
+      environment.apiUrl +environment.quotationsApiUrl + '/';
     let httpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${sessionId}`,
@@ -23,50 +22,10 @@ export class ClientsService {
     return this.http.get<Array<any>>(postUrl, { headers: httpHeaders });
   }
 
-  getClient(id: string): Observable<Array<any>> {
+  deleteQuotation(id: any): Observable<Array<any>> {
     var sessionId = localStorage.getItem('authKey');
     var userId = localStorage.getItem('userId');
-    const postUrl =
-      environment.apiUrl +environment.clientsApiUrl + '/' + id;
-    let httpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${sessionId}`,
-    });
-    return this.http.get<Array<any>>(postUrl, { headers: httpHeaders });
-  }
-
-  updateClient(clientId: any, clientData: any): Observable<Array<any>> {
-    var sessionId = localStorage.getItem('authKey');
-    var userId = localStorage.getItem('userId');
-  
-    let httpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${sessionId}`,
-    });
-    const postUrl = environment.apiUrl + environment.clientsApiUrl;
-    return this.http.put<Array<any>>(postUrl + '/' + clientId, clientData, {
-      headers: httpHeaders,
-    });
-  }
-
-  
-  createClient(clientData: any): Observable<Array<any>> {
-    var sessionId = localStorage.getItem('authKey');
-    var userId = localStorage.getItem('userId');
-    let httpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${sessionId}`,
-    });
-    const postUrl = environment.apiUrl + environment.clientsApiUrl;
-    return this.http.post<Array<any>>(postUrl, clientData, {
-      headers: httpHeaders,
-    });
-  }
-
-  deleteClient(id: any): Observable<Array<any>> {
-    var sessionId = localStorage.getItem('authKey');
-    var userId = localStorage.getItem('userId');
-    const postUrl = environment.apiUrl + environment.clientsApiUrl;
+    const postUrl = environment.apiUrl + environment.quotationsApiUrl;
     let httpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${sessionId}`,
@@ -75,6 +34,49 @@ export class ClientsService {
       headers: httpHeaders,
     });
   }
+
+  getQuotation(id: string): Observable<Array<any>> {
+    var sessionId = localStorage.getItem('authKey');
+    var userId = localStorage.getItem('userId');
+    const postUrl =
+      environment.apiUrl +environment.quotationsApiUrl + '/' + id;
+    let httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sessionId}`,
+    });
+    return this.http.get<Array<any>>(postUrl, { headers: httpHeaders });
+  }
+
+  updateQuotation(quotationId: any, quotationData: any): Observable<Array<any>> {
+    var sessionId = localStorage.getItem('authKey');
+    var userId = localStorage.getItem('userId');
+  
+    let httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sessionId}`,
+    });
+    const postUrl = environment.apiUrl + environment.quotationsApiUrl;
+    return this.http.put<Array<any>>(postUrl + '/' + quotationId, quotationData, {
+      headers: httpHeaders,
+    });
+  }
+
+  
+  createQuotation(quotationData: any): Observable<Array<any>> {
+  
+    var sessionId = localStorage.getItem('authKey');
+    var userId = localStorage.getItem('userId');
+    let httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sessionId}`,
+    });
+    const postUrl = environment.apiUrl + environment.quotationsApiUrl;
+    return this.http.post<Array<any>>(postUrl, quotationData, {
+      headers: httpHeaders,
+    });
+  }
+
+
 
 
 }

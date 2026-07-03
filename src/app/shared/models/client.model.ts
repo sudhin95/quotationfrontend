@@ -4,6 +4,7 @@
  */
 export interface Client {
   id: string;
+  clientid: string;
   name: string;
   company: string;
   email: string;

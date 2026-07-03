@@ -1,0 +1,276 @@
+<div class="client-form-page animate-fade-in">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1>{{ pageTitle }}</h1>
+      <p>{{ isEditMode ? 'Update the quotation details below' : 'Fill in the details to add a new quotation' }}</p>
+    </div>
+    <button class="btn btn-secondary" (click)="cancel()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"/>
+        <polyline points="12 19 5 12 12 5"/>
+      </svg>
+      Back to Quotations
+    </button>
+  </div>
+
+  <!-- Form Card -->
+  <div class="card" *ngIf="!isLoading">
+    <div class="card-body">
+      <form [formGroup]="QuotationForm" (ngSubmit)="onSubmit()" novalidate>
+
+        <!-- Two-column row -->
+        <div class="form-row">
+          <!-- Name -->
+          <div class="form-group">
+            <label for="name">Quotation Number <span class="required">*</span></label>
+            <input
+              type="text"
+              id="name"
+              class="form-control"
+              formControlName="quotnumber"
+              placeholder="e.g. Q-1001"
+              [class.is-invalid]="f['quotnumber'].touched && f['quotnumber'].invalid"
+              readonly
+            >
+            <div class="invalid-feedback" *ngIf="f['quotnumber'].touched && f['quotnumber'].errors">
+              <span *ngIf="f['quotnumber'].errors['required']">Quotation number is required</span>
+              <span *ngIf="f['quotnumber'].errors['minlength']">Quotation number must be at least 2 characters</span>
+            </div>
+          </div>
+
+          <!-- Company -->
+          <div class="form-group">
+                        <label for="company">Company</label>
+
+
+            <select
+                id="clientid"
+                class="form-control"
+                formControlName="clientid" (change)="onCompanyChange($event)">
+                <option value="">Select Company</option>
+                <option *ngFor="let company of clients" [value]="company.clientid" >
+                    {{ company.name }}
+                </option>
+                </select>
+          
+          </div>
+        </div>
+
+        <!-- Two-column row -->
+        <div class="form-row">
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email">Email Address <span class="required">*</span></label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              formControlName="email"
+              placeholder="e.g. john@acme.com"
+              [class.is-invalid]="f['email'].touched && f['email'].invalid"
+              readonly
+            >
+            <div class="invalid-feedback" *ngIf="f['email'].touched && f['email'].errors">
+              <span *ngIf="f['email'].errors['required']">Email is required</span>
+              <span *ngIf="f['email'].errors['email']">Please enter a valid email</span>
+            </div>
+          </div>
+
+          <!-- Phone -->
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input
+              type="tel"
+              id="phone"
+              class="form-control"
+              formControlName="phone"
+              placeholder="e.g. +973 33123456"
+              readonly
+            >
+          </div>
+        </div>
+
+        <!-- Notes (full width) -->
+        <div class="form-row">
+            <div class="form-group">
+            <label for="notes">Title</label>
+            <textarea
+                id="title"
+                class="form-control"
+                formControlName="title"
+                placeholder="Quotation Title"
+                rows="4"
+            ></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="quotationDate">
+                Quotation Date <span class="required">*</span>
+                </label>
+
+                <input
+                type="datetime-local"
+                id="quotationDate"
+                class="form-control"
+                formControlName="quotationDate"
+                [class.is-invalid]="f['quotationDate'].touched && f['quotationDate'].invalid"
+                >
+
+                <div class="invalid-feedback"
+                    *ngIf="f['quotationDate']?.touched && f['quotationDate']?.errors">
+                <span *ngIf="f['quotationDate']?.errors?.['required']">
+                    Quotation date is required
+                </span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email">Status <span class="required">*</span></label>
+            <input
+              type="status"
+              id="status"
+              class="form-control"
+              formControlName="status"
+              placeholder="Draft"   
+              value="Draft" readonly
+            >
+          
+          </div>
+
+          <!-- Phone -->
+          <div class="form-group">
+            <label for="phone">Total Amount</label>
+            <input
+              type="text"
+              id="totalamount"
+              class="form-control"
+              formControlName="totalamount"
+              placeholder="e.g.3000"
+            >
+          </div>
+        </div>
+
+
+
+
+        <!-- Quotation Items -->
+<div class="items-section">
+  <div class="items-header">
+    <h3>Quotation Items</h3>
+    <button type="button" class="btn btn-secondary btn-sm" (click)="addItem()">
+      + Add Item
+    </button>
+  </div>
+
+  <div formArrayName="items">
+    <div
+      class="item-row"
+      *ngFor="let item of items.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <div class="item-row-grid">
+        <div class="form-group">
+          <label>Title <span class="required">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="title"
+            placeholder="Item title"
+            [class.is-invalid]="item.get('title')?.touched && item.get('title')?.invalid"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="description"
+            placeholder="Description"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Quantity <span class="required">*</span></label>
+          <input
+            type="number"
+            class="form-control"
+            formControlName="quantity"
+            min="1"
+            (input)="calculateItemTotal(i)"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Unit Price <span class="required">*</span></label>
+          <input
+            type="number"
+            class="form-control"
+            formControlName="unitprice"
+            min="0"
+            step="0.01"
+            (input)="calculateItemTotal(i)"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Total</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="totalprice"
+            readonly
+          >
+        </div>
+
+        <div class="form-group item-remove">
+          <button
+            type="button"
+            class="btn btn-icon-danger"
+            (click)="removeItem(i)"
+            [disabled]="items.length === 1"
+            title="Remove item"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="isSaving">
+            <span class="spinner" *ngIf="isSaving"></span>
+            <span *ngIf="!isSaving">{{ isEditMode ? 'Update Quotation' : 'Create Quotation' }}</span>
+            <span *ngIf="isSaving">Saving...</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div class="card" *ngIf="isLoading">
+    <div class="card-body loading-state">
+      <div class="spinner-large"></div>
+      <p>Loading Quotation details...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" [class.toast-success]="toastType === 'success'" [class.toast-error]="toastType === 'error'" *ngIf="showToast">
+  {{ toastMessage }}
+</div>
