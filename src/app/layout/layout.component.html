@@ -1,0 +1,23 @@
+<div class="app-layout" [class.sidebar-collapsed]="isSidebarCollapsed">
+  <!-- Sidebar -->
+  <app-sidebar
+    [isCollapsed]="isSidebarCollapsed"
+    (toggleCollapse)="toggleSidebar()">
+  </app-sidebar>
+
+  <!-- Main content area -->
+  <div class="main-area">
+    <app-header (menuToggle)="toggleSidebar()"></app-header>
+
+    <main class="content-area">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <!-- Mobile overlay when sidebar is open -->
+  <div
+    class="mobile-overlay"
+    *ngIf="!isSidebarCollapsed"
+    (click)="toggleSidebar()">
+  </div>
+</div>

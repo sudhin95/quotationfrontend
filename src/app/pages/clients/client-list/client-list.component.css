@@ -1,0 +1,101 @@
+/* Client List Styles */
+
+.client-list {
+  max-width: 1100px;
+}
+
+/* Search section */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+.search-box input {
+  padding-left: 40px;
+}
+
+.client-count {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Client name cell with avatar */
+.client-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.client-avatar {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), #a855f7);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.client-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.email-text {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.delete-btn:hover {
+  color: var(--color-danger) !important;
+  background: rgba(239, 68, 68, 0.06) !important;
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* Table row animation */
+.table-row-animate {
+  animation: fadeIn var(--transition-base) ease forwards;
+  opacity: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box {
+    max-width: 100%;
+  }
+
+  table thead th:nth-child(4),
+  table tbody td:nth-child(4) {
+    display: none;
+  }
+}
