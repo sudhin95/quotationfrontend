@@ -6,7 +6,7 @@ import { LayoutModule } from './layout/layout.module';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,8 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     LayoutModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    NgSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

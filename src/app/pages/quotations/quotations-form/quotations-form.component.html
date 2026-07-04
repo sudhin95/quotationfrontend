@@ -48,8 +48,19 @@
           <div class="form-group">
                         <label for="company">Company</label>
 
+                        <ng-select
+    id="clientid"
+    [items]="clients"
+    bindLabel="company"
+    bindValue="clientid"
+    placeholder="Select Company"
+    formControlName="clientid"
+    [class.is-invalid]="f['clientid'].touched && f['clientid'].invalid"
+    (change)="onCompanyChange($event)">
+</ng-select>
 
-            <select
+
+            <!-- <select
                 id="clientid"
                 class="form-control"
                 formControlName="clientid" (change)="onCompanyChange($event)">
@@ -57,7 +68,7 @@
                 <option *ngFor="let company of clients" [value]="company.clientid" >
                     {{ company.name }}
                 </option>
-                </select>
+                </select> -->
           
           </div>
         </div>
@@ -98,78 +109,6 @@
 
 
 
-        <!-- Notes (full width) -->
-<!-- <div class="form-row">
-    <div class="form-group">
-      <label for="notes">Title</label>
-      <div class="title-input-wrapper">
-        <textarea
-            id="title"
-            class="form-control"
-            formControlName="title"
-            placeholder="Quotation Title"
-            rows="4"
-        ></textarea>
-
-        <button
-          type="button"
-          class="btn btn-ai-suggest"
-          (click)="getTitleSuggestions()"
-          [disabled]="isSuggestingTitle || !f['title'].value"
-          title="Get AI title suggestions"
-        >
-          <span class="spinner-sm" *ngIf="isSuggestingTitle"></span>
-          <span *ngIf="!isSuggestingTitle">✨ Suggest with AI</span>
-          <span *ngIf="isSuggestingTitle">Thinking...</span>
-        </button>
-
-        <div class="ai-suggestions-panel" *ngIf="showTitleSuggestions">
-          <div class="ai-suggestions-header">
-            <span>Suggestions</span>
-            <button type="button" class="btn-close-suggestions" (click)="showTitleSuggestions = false">✕</button>
-          </div>
-
-          <ul class="ai-suggestions-list" *ngIf="titleSuggestions.length; else noSuggestions">
-            <li
-              *ngFor="let suggestion of titleSuggestions"
-              (click)="applyTitleSuggestion(suggestion)"
-            >
-              {{ suggestion }}
-            </li>
-          </ul>
-
-          <ng-template #noSuggestions>
-            <div class="ai-suggestions-empty">No suggestions found. Try refining the title.</div>
-          </ng-template>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-        <label for="quotationDate">
-        Quotation Date <span class="required">*</span>
-        </label>
-
-        <input
-        #quotationDateInput
-        type="datetime-local"
-        id="quotationDate"
-        class="form-control"
-        formControlName="quotationDate"
-         (click)="openDatePicker(quotationDateInput)"
-        [class.is-invalid]="f['quotationDate'].touched && f['quotationDate'].invalid"
-        >
-
-        <div class="invalid-feedback"
-            *ngIf="f['quotationDate']?.touched && f['quotationDate']?.errors">
-        <span *ngIf="f['quotationDate']?.errors?.['required']">
-            Quotation date is required
-        </span>
-        </div>
-    </div>
-
-</div> -->
-
 
 
 
@@ -177,13 +116,12 @@
         <div class="form-row">
             <div class="form-group">
             <label for="notes">Title</label>
-            <textarea
+            <input
                 id="title"
                 class="form-control"
                 formControlName="title"
                 placeholder="Quotation Title"
-                rows="4"
-            ></textarea>
+            >
             </div>
 
             <div class="form-group">
@@ -223,7 +161,7 @@
                 class="form-control"
                 formControlName="status">
                 <option [value]="0">Draft</option>
-                <option [value]="1">Pending</option>
+                <option [value]="1">Sent</option>
                 <option [value]="2">Approved</option>
                 <option [value]="3">Rejected</option>
               </select>
@@ -242,6 +180,28 @@
             >
           </div>
         </div>
+
+
+
+      
+          <!-- Email -->
+          <div class="form-group">
+        
+
+             <label for="description">Description</label>
+
+              <textarea
+              type="text"
+              id="description"
+              class="form-control"
+              formControlName="description"
+              placeholder="Description"
+              rows="4"
+              ></textarea>
+          
+          </div>
+
+    
 
 
 

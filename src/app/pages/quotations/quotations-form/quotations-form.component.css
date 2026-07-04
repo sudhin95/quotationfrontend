@@ -376,6 +376,28 @@
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
+
+::ng-deep .ng-select .ng-select-container {
+  min-height: 38px;
+  border: 1px solid #ced4da;   /* match your .form-control border color */
+  border-radius: 4px;          /* match your .form-control radius */
+  background-color: #fff;
+}
+
+::ng-deep .ng-select.ng-select-focused .ng-select-container {
+  border-color: #6366f1;       /* match your input focus border */
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); /* match focus glow */
+}
+
+::ng-deep .ng-select.ng-select-disabled .ng-select-container {
+  background-color: #e9ecef;
+}
+
+/* Optional: match invalid state like your other inputs */
+::ng-deep .ng-select.is-invalid .ng-select-container {
+  border-color: #dc3545;
+}
+
 @keyframes spin { to { transform: rotate(360deg); } }
 
 

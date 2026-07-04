@@ -4,6 +4,7 @@ import { QuotationsListComponent } from './quotations-list/quotations-list.compo
 import { QuotationsFormComponent } from './quotations-form/quotations-form.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const routes: Routes = [
   { path: '', component: QuotationsListComponent },
@@ -20,7 +21,8 @@ const routes: Routes = [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    RouterModule.forChild(routes)
+    NgSelectModule,
+    RouterModule.forChild(routes),
   ]
 })
 export class QuotationsModule { }
