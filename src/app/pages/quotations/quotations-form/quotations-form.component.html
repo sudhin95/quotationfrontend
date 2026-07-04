@@ -5,6 +5,11 @@
       <h1>{{ pageTitle }}</h1>
       <p>{{ isEditMode ? 'Update the quotation details below' : 'Fill in the details to add a new quotation' }}</p>
     </div>
+
+      <div class="header-actions">
+    <button class="btn btn-ai-suggest" (click)="openAiDrawer()">
+      ✨ Suggest with AI
+    </button>
     <button class="btn btn-secondary" (click)="cancel()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="19" y1="12" x2="5" y2="12"/>
@@ -91,6 +96,83 @@
           </div>
         </div>
 
+
+
+        <!-- Notes (full width) -->
+<!-- <div class="form-row">
+    <div class="form-group">
+      <label for="notes">Title</label>
+      <div class="title-input-wrapper">
+        <textarea
+            id="title"
+            class="form-control"
+            formControlName="title"
+            placeholder="Quotation Title"
+            rows="4"
+        ></textarea>
+
+        <button
+          type="button"
+          class="btn btn-ai-suggest"
+          (click)="getTitleSuggestions()"
+          [disabled]="isSuggestingTitle || !f['title'].value"
+          title="Get AI title suggestions"
+        >
+          <span class="spinner-sm" *ngIf="isSuggestingTitle"></span>
+          <span *ngIf="!isSuggestingTitle">✨ Suggest with AI</span>
+          <span *ngIf="isSuggestingTitle">Thinking...</span>
+        </button>
+
+        <div class="ai-suggestions-panel" *ngIf="showTitleSuggestions">
+          <div class="ai-suggestions-header">
+            <span>Suggestions</span>
+            <button type="button" class="btn-close-suggestions" (click)="showTitleSuggestions = false">✕</button>
+          </div>
+
+          <ul class="ai-suggestions-list" *ngIf="titleSuggestions.length; else noSuggestions">
+            <li
+              *ngFor="let suggestion of titleSuggestions"
+              (click)="applyTitleSuggestion(suggestion)"
+            >
+              {{ suggestion }}
+            </li>
+          </ul>
+
+          <ng-template #noSuggestions>
+            <div class="ai-suggestions-empty">No suggestions found. Try refining the title.</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+        <label for="quotationDate">
+        Quotation Date <span class="required">*</span>
+        </label>
+
+        <input
+        #quotationDateInput
+        type="datetime-local"
+        id="quotationDate"
+        class="form-control"
+        formControlName="quotationDate"
+         (click)="openDatePicker(quotationDateInput)"
+        [class.is-invalid]="f['quotationDate'].touched && f['quotationDate'].invalid"
+        >
+
+        <div class="invalid-feedback"
+            *ngIf="f['quotationDate']?.touched && f['quotationDate']?.errors">
+        <span *ngIf="f['quotationDate']?.errors?.['required']">
+            Quotation date is required
+        </span>
+        </div>
+    </div>
+
+</div> -->
+
+
+
+
         <!-- Notes (full width) -->
         <div class="form-row">
             <div class="form-group">
@@ -110,10 +192,12 @@
                 </label>
 
                 <input
+                #quotationDateInput
                 type="datetime-local"
                 id="quotationDate"
                 class="form-control"
                 formControlName="quotationDate"
+                 (click)="openDatePicker(quotationDateInput)"
                 [class.is-invalid]="f['quotationDate'].touched && f['quotationDate'].invalid"
                 >
 
@@ -130,15 +214,19 @@
         <div class="form-row">
           <!-- Email -->
           <div class="form-group">
-            <label for="email">Status <span class="required">*</span></label>
-            <input
-              type="status"
-              id="status"
-              class="form-control"
-              formControlName="status"
-              placeholder="Draft"   
-              value="Draft" readonly
-            >
+        
+
+             <label for="status">Status <span class="required">*</span></label>
+
+              <select
+                id="status"
+                class="form-control"
+                formControlName="status">
+                <option [value]="0">Draft</option>
+                <option [value]="1">Pending</option>
+                <option [value]="2">Approved</option>
+                <option [value]="3">Rejected</option>
+              </select>
           
           </div>
 
@@ -273,4 +361,82 @@
 <!-- Toast Notification -->
 <div class="toast" [class.toast-success]="toastType === 'success'" [class.toast-error]="toastType === 'error'" *ngIf="showToast">
   {{ toastMessage }}
+</div>
+
+
+
+<!-- AI Suggestion Drawer -->
+<div class="drawer-overlay" *ngIf="showAiDrawer" (click)="closeAiDrawer()"></div>
+
+<div class="ai-drawer" [class.open]="showAiDrawer">
+  <div class="ai-drawer-header">
+    <h3>✨ AI Quotation Assistant</h3>
+    <button class="btn-close-drawer" (click)="closeAiDrawer()">✕</button>
+  </div>
+
+  <div class="ai-drawer-body">
+    <!-- Prompt Input -->
+    <div class="ai-input-section">
+      <label for="aiPrompt">Describe the quotation you need</label>
+      <textarea
+        id="aiPrompt"
+        class="form-control"
+        rows="4"
+        [(ngModel)]="aiPrompt"
+        [ngModelOptions]="{standalone: true}"
+        placeholder="e.g. Private dining catering for 10 guests, 3-course dinner with icecream pairing"
+      ></textarea>
+
+      <button
+        class="btn btn-primary btn-generate"
+        (click)="generateAiSuggestion()"
+        [disabled]="isGeneratingAi || !aiPrompt.trim()"
+      >
+        <span class="spinner-sm" *ngIf="isGeneratingAi"></span>
+        <span *ngIf="!isGeneratingAi">Generate Suggestion</span>
+        <span *ngIf="isGeneratingAi">Generating...</span>
+      </button>
+    </div>
+
+    <!-- Response Section -->
+    <div class="ai-response-section" *ngIf="aiResponse">
+      <div class="ai-response-divider"></div>
+      <div class="ai-project-type">
+        <span class="ai-tag">{{ aiResponse.project_type }}</span>
+      </div>
+
+      <p class="ai-summary">{{ aiResponse.summary }}</p>
+
+      <h4 class="ai-section-title">Suggested Items</h4>
+      <div class="ai-item-card" *ngFor="let item of aiResponse.suggested_items">
+        <div class="ai-item-card-header">
+          <span class="ai-item-title">{{ item.title }}</span>
+          <span class="ai-item-total">BHD{{ item.totalprice | number:'1.2-2' }}</span>
+        </div>
+        <p class="ai-item-desc">{{ item.description }}</p>
+        <div class="ai-item-meta">
+          <span>Qty: {{ item.quantity }}</span>
+          <span>Unit Price: BHD{{ item.unitprice | number:'1.2-2' }}</span>
+        </div>
+      </div>
+
+      <h4 class="ai-section-title" *ngIf="aiResponse.questions_to_ask_client?.length">
+        Questions to Ask the Client
+      </h4>
+      <ul class="ai-questions-list">
+        <li *ngFor="let q of aiResponse.questions_to_ask_client">{{ q }}</li>
+      </ul>
+    </div>
+
+    <div class="ai-empty-state" *ngIf="!aiResponse && !isGeneratingAi">
+      <p>Describe your project above and click <strong>Generate Suggestion</strong> to get AI-recommended quotation items.</p>
+    </div>
+  </div>
+
+  <div class="ai-drawer-footer" *ngIf="aiResponse">
+    <button class="btn btn-secondary" (click)="regenerateAiSuggestion()">Regenerate</button>
+    <button class="btn btn-primary" (click)="addAiSuggestionsToQuotation()">
+      Add to Quotation
+    </button>
+  </div>
 </div>

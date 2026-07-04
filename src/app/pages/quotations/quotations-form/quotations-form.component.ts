@@ -30,6 +30,17 @@ export class QuotationsFormComponent {
         
       ) { }
 
+      
+      openDatePicker(input: EventTarget | null): void {
+          const el = input as HTMLInputElement;
+
+          if (el.showPicker) {
+            el.showPicker();
+          } else {
+            el.focus();
+          }
+        }
+
         ngOnInit(): void {
           this.initForm();
           this.findQuotNumber();
@@ -46,6 +57,7 @@ export class QuotationsFormComponent {
 
           } else {
             this.addItem();
+            this.QuotationForm.get('status')?.disable();
           }
           
         }
@@ -95,7 +107,7 @@ export class QuotationsFormComponent {
               title: [''],
               quotationDate: [''],
               totalamount: [''],
-              status: ['Draft'],
+              status: [0],
               items: this.fb.array([])
             
             });
@@ -114,7 +126,6 @@ export class QuotationsFormComponent {
                 this.router.navigate(['/quotations']);
                 return;
               }
-console.log('Fetched quotation data:', this.quotations);
               this.QuotationForm.patchValue({
                 quotnumber: this.quotations.quotnumber,
                 clientid: this.quotations.clientid,
@@ -123,7 +134,7 @@ console.log('Fetched quotation data:', this.quotations);
                 title: this.quotations.title,
                 quotationDate: this.quotations.quotationDate,
                 totalamount: this.quotations.totalamount,
-                status: this.quotations.status
+                status: this.quotations.statusid
               });
 
               // Rebuild items array from fetched data
@@ -148,6 +159,7 @@ console.log('Fetched quotation data:', this.quotations);
               this.calculateGrandTotal();
             });
           }
+
 
           onSubmit(): void {
               this.QuotationForm.markAllAsTouched();
@@ -244,6 +256,153 @@ calculateGrandTotal(): void {
   });
 
   this.QuotationForm.get('totalamount')?.setValue(total);
+}
+
+titleSuggestions: string[] = [];
+showTitleSuggestions = false;
+isSuggestingTitle = false;
+
+getTitleSuggestions(): void {
+  const currentTitle = this.f['title'].value;
+  if (!currentTitle) return;
+
+  this.isSuggestingTitle = true;
+  this.showTitleSuggestions = false;
+console.log('Fetching title suggestions for:', currentTitle);
+  //  this.isLoading = true;
+            this.quotationsService.getQuotationSuggestions(currentTitle).subscribe((data: any) => {
+              // this.isLoading = false;
+              this.quotations = data.body;
+
+              console.log('Fetched title suggestions:', data);
+
+              if (!this.quotations) {
+                this.showNotification('Quotation not found', 'error');
+                this.router.navigate(['/quotations']);
+                return;
+              }
+              this.QuotationForm.patchValue({
+                quotnumber: this.quotations.quotnumber,
+                clientid: this.quotations.clientid,
+                email: this.quotations.email,
+                phone: this.quotations.phone,
+                title: this.quotations.title,
+                quotationDate: this.quotations.quotationDate,
+                totalamount: this.quotations.totalamount,
+                status: this.quotations.statusid
+              });
+
+              // Rebuild items array from fetched data
+              this.items.clear();
+              if (Array.isArray(this.quotations.items)) {
+                this.quotations.items.forEach((item: any) => {
+                  const qty = item.quantity || 0;
+                  const price = item.unitprice || 0;
+                  const computedTotal = item.totalprice ?? (qty * price);
+
+                  this.items.push(this.fb.group({
+                    title: [item.title, Validators.required],
+                    description: [item.description || ''],
+                    quantity: [qty, [Validators.required, Validators.min(1)]],
+                    unitprice: [price, [Validators.required, Validators.min(0)]],
+                    totalprice: [{ value: computedTotal, disabled: true }]
+                  }));
+                });
+              } else {
+                this.addItem();
+              }
+              this.calculateGrandTotal();
+            });
+
+
+  // this.quotationService.suggestTitles(currentTitle).subscribe({
+  //   // next: (suggestions: string[]) => {
+  //   //   this.titleSuggestions = suggestions;
+  //   //   this.showTitleSuggestions = true;
+  //   //   this.isSuggestingTitle = false;
+  //   // },
+  //   // error: () => {
+  //   //   this.isSuggestingTitle = false;
+  //   //   this.showToastMessage('Could not fetch suggestions', 'error');
+  //   // }
+  // });
+}
+
+applyTitleSuggestion(suggestion: string): void {
+  this.f['title'].setValue(suggestion);
+  this.showTitleSuggestions = false;
+}
+
+
+showAiDrawer = false;
+aiPrompt = '';
+isGeneratingAi = false;
+aiResponse: any = null;
+
+openAiDrawer(): void {
+  this.showAiDrawer = true;
+}
+
+closeAiDrawer(): void {
+  this.showAiDrawer = false;
+}
+
+generateAiSuggestion(): void {
+  if (!this.aiPrompt.trim()) return;
+
+  this.isGeneratingAi = true;
+  this.aiResponse = null;
+
+  this.quotationsService.getQuotationSuggestions(this.aiPrompt).subscribe({
+    next: (response: any) => {
+      console.log('AI suggestion response:', response);
+      this.aiResponse = response.body;
+      this.isGeneratingAi = false;
+    },
+    error: () => {
+      this.isGeneratingAi = false;
+      this.showNotification('Could not generate suggestion', 'error');
+    }
+  });
+}
+
+regenerateAiSuggestion(): void {
+  this.generateAiSuggestion();
+}
+
+addAiSuggestionsToQuotation(): void {
+  if (!this.aiResponse) return;
+  // Fill title/summary if title field is empty
+  if (!this.f['title'].value) {
+    this.f['title'].setValue(this.aiResponse.summary || this.aiResponse.project_type);
+  }
+
+  // If the only existing item row is empty, remove it before adding AI items
+  if (this.items.length === 1 && !this.items.at(0).get('title')?.value) {
+    this.items.removeAt(0);
+  }
+
+  this.aiResponse.suggested_items.forEach((item: any) => {
+    this.items.push(this.fb.group({
+      title: [item.title],
+      description: [item.description],
+      quantity: [item.quantity],
+      unitprice: [item.unitprice],
+      totalprice: [item.totalprice]
+    }));
+  });
+
+  this.recalculateTotalAmount();
+  this.closeAiDrawer();
+  this.showNotification('AI suggestions added to quotation', 'success');
+}
+
+private recalculateTotalAmount(): void {
+  const total = this.items.controls.reduce(
+    (sum, ctrl) => sum + (Number(ctrl.get('totalprice')?.value) || 0),
+    0
+  );
+  this.f['totalamount'].setValue(total);
 }
 
 }

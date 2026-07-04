@@ -57,19 +57,20 @@ console.log('QuotationListComponent initialized');
   /**
    * Filter the quotation list by name, company, or email.
    */
+
   applyFilter(): void {
-    console.log('Filtering quotations with term:', this.quotations);
     const term = this.searchTerm.toLowerCase().trim();
+
     if (!term) {
       this.filteredQuotations = [...this.quotations];
-      console.log("dgfd", this.filteredQuotations);
       return;
     }
 
     this.filteredQuotations = this.quotations.filter(quotation =>
-      quotation.name.toLowerCase().includes(term) ||
-      quotation.company.toLowerCase().includes(term) ||
-      quotation.email.toLowerCase().includes(term)
+      (quotation.quotationnumber ?? '').toString().toLowerCase().includes(term) ||
+      (quotation.phone ?? '').toString().toLowerCase().includes(term) ||
+      (quotation.email ?? '').toLowerCase().includes(term) ||
+      (quotation.title ?? '').toLowerCase().includes(term)
     );
   }
 

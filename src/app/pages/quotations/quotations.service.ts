@@ -75,6 +75,19 @@ export class QuotationsService {
       headers: httpHeaders,
     });
   }
+    
+  getQuotationSuggestions(title: any): Observable<Array<any>> {
+    var sessionId = localStorage.getItem('authKey');
+    var userId = localStorage.getItem('userId');
+    let httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sessionId}`,
+    });
+    const postUrl = environment.apiUrl + environment.quotationsApiUrl;
+    return this.http.post<Array<any>>(postUrl + '/ai/quotation-draft' , { title }, {
+      headers: httpHeaders,
+    });
+  }
 
 
 
