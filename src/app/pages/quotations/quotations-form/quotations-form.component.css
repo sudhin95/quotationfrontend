@@ -377,6 +377,8 @@
   animation: spin 0.6s linear infinite;
 }
 
+
+
 ::ng-deep .ng-select .ng-select-container {
   min-height: 38px;
   border: 1px solid #ced4da;   /* match your .form-control border color */

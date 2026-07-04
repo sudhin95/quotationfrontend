@@ -65,7 +65,11 @@
               <span class="email-text">{{ quotation.email }}</span>
             </td>
             <td>{{ quotation.totalamount || '—' }}</td>
-            <td>{{ quotation.statusname || '—' }}</td>
+           <td>
+              <span class="status-badge" [ngClass]="getStatusBadgeClass(quotation.statusname)">
+                {{ quotation.statusname || '—' }}
+              </span>
+            </td>
 
             <td class="text-right">
               <div class="action-buttons">

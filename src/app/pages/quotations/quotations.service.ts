@@ -84,7 +84,7 @@ export class QuotationsService {
       Authorization: `Bearer ${sessionId}`,
     });
     const postUrl = environment.apiUrl + environment.quotationsApiUrl;
-    return this.http.post<Array<any>>(postUrl + '/ai/quotation-draft' , { title }, {
+    return this.http.post<Array<any>>(postUrl + '/ai-draft' , { title }, {
       headers: httpHeaders,
     });
   }

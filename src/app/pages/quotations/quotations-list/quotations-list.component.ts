@@ -137,4 +137,14 @@ console.log('QuotationListComponent initialized');
     viewQuotation(quotation: any): void {
       this.router.navigate(['/quotations/view', quotation.quotationid]);
     }
+
+   getStatusBadgeClass(statusName: string): string {
+  switch ((statusName || '').toLowerCase()) {
+    case 'draft':    return 'status-draft';
+    case 'sent':     return 'status-sent';
+    case 'approved': return 'status-approved';
+    case 'rejected': return 'status-rejected';
+    default:         return '';
+  }
+}
 }
