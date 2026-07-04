@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuotationsService } from '../quotations.service';
-import { Client } from '../../../shared/models/client.model';
 
 /**
  * QuotationListComponent

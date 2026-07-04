@@ -12,7 +12,10 @@ export class QuotationViewComponent implements OnInit {
   quotation: any = null;
   isLoading = true;
   quotationId: string = '';
-  companyInfo:any
+  companyInfo:any;
+  toastMessage = '';
+  toastType = 'success';
+  showToast = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -70,4 +73,30 @@ export class QuotationViewComponent implements OnInit {
   goBack(): void {
     this.router.navigate(['/quotations']);
   }
+
+  approveQuotation(): void {
+    if (!this.quotationId) return;
+     this.quotationService.approveQuotation(this.quotationId).subscribe((data:any) => {
+      console.log('Approve response:', data);
+      if (data && data.header && data.header.return_status === true ) {
+        this.showNotification(data.header.return_message, 'success');
+        setTimeout(() => {
+            this.loadQuotation();
+        }, 2000);
+      } else {
+        this.showNotification('Failed to delete quotation', 'error');
+      }
+    });
+  }
+
+  private showNotification(message: string, type: string): void {
+    this.toastMessage = message;
+    this.toastType = type;
+    this.showToast = true;
+    setTimeout(() => {
+      this.showToast = false;
+    }, 3000);
+  }
+
+
 }

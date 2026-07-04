@@ -17,7 +17,7 @@ export class QuotationsFormComponent {
     isSaving = false;
     pageTitle = 'New Quotation';
     clients:any;
-
+    fromAI=0;
     toastMessage = '';
     toastType = 'success';
     showToast = false;
@@ -198,6 +198,7 @@ export class QuotationsFormComponent {
                   }
                 });
               } else {
+                formData.fromAI = this.fromAI;
                 this.quotationsService.createQuotation(formData).subscribe((data: any) => {
                   this.isSaving = false;
                   console.log('Quotation created:', data);
@@ -314,6 +315,7 @@ export class QuotationsFormComponent {
         addAiSuggestionsToQuotation(): void {
           if (!this.aiResponse) return;
 
+          this.fromAI = 1; // Mark that this quotation has AI suggestions
           // Title <- project_type
           if (!this.f['title'].value) {
             this.f['title'].setValue(this.aiResponse.project_type || '');

@@ -10,22 +10,8 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
-  // Hardcoded test user credentials
-  // private readonly TEST_EMAIL = 'admin@example.com';
-  // private readonly TEST_PASSWORD = 'password123';
-  // private readonly STORAGE_KEY = 'qb_auth_token';
-  // private readonly USER_KEY = 'qb_user';
 
-  // Test user profile
-    // private readonly testUser: User = {
-    //   id: '1',
-    //   name: 'Admin User',
-    //   email: this.TEST_EMAIL
-    // };
-
-
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private router: Router) { }
 
   getLogin(username:any,password:any): Observable<Array<any>> {
     console.log('getLogin called with username:', username, 'and password:', password);
@@ -46,6 +32,12 @@ export class AuthService {
     return !!localStorage.getItem('authKey');
   }
 
+ logout(): void {
+  localStorage.clear();
+  this.router.navigate(['/login']);
+}
+
+   
 
 
 }

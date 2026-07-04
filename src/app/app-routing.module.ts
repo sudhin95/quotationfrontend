@@ -26,6 +26,10 @@ const routes: Routes = [
         path: 'quotations',
         loadChildren: () => import('./pages/quotations/quotations.module').then(m => m.QuotationsModule  )
       },
+       {
+        path: 'ai-logs',
+        loadChildren: () => import('./pages/ai-logs/ai-logs.module').then(m => m.AiLogsModule  )
+      },
       // Default redirect
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

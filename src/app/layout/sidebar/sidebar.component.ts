@@ -34,6 +34,12 @@ export class SidebarComponent {
       route: '/quotations',
       icon: 'quotations',
       disabled: false  // Coming in a future phase
+    },
+     {
+      label: 'AI Logs',
+      route: '/ai-logs',
+      icon: 'ai-logs',
+      disabled: false  // Coming in a future phase
     }
   ];
 
@@ -47,7 +53,7 @@ export class SidebarComponent {
   }
 
   logout(): void {
-    // this.authService.logout();
+    this.authService.logout();
   }
 
   /**

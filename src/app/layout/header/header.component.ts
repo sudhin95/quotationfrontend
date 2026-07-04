@@ -41,7 +41,7 @@ export class HeaderComponent {
   }
 
   logout(): void {
-    // this.authService.logout();
+    this.authService.logout();
   }
 
   /**

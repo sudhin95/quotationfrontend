@@ -9,7 +9,9 @@ export const environment = {
 
   loginApiUrl: 'api/v1/auth',
   clientsApiUrl: 'api/v1/clients',
-  quotationsApiUrl: 'api/v1/quotations'
+  quotationsApiUrl: 'api/v1/quotations',
+  aiLogsApiUrl: 'api/v1/ai-logs'
+
 
 
 

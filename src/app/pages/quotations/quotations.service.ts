@@ -89,6 +89,23 @@ export class QuotationsService {
     });
   }
 
+  approveQuotation(id: any): Observable<Array<any>> {
+    var sessionId = localStorage.getItem('authKey');
+    console.log(sessionId);
+    var userId = localStorage.getItem('userId');
+    let httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sessionId}`,
+    });
+    const postUrl = environment.apiUrl + environment.quotationsApiUrl;
+
+    return this.http.post<Array<any>>(
+      postUrl + '/' + id + '/approve',
+      {},                          // body — empty object if your API doesn't need a payload
+      { headers: httpHeaders }     // options — headers go here
+    );
+  }
+
   
 
 

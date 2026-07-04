@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { ClientsService } from '../../pages/clients/clients.service';
 import { User } from '../../shared/models/user.model';
+import { QuotationsService } from '../../pages/quotations/quotations.service';
+
 
 /**
  * DashboardComponent
@@ -21,7 +23,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private clientsService: ClientsService
+    private clientsService: ClientsService,
+    private quotationsService: QuotationsService,
   ) { }
 
   ngOnInit(): void {
@@ -29,6 +32,7 @@ export class DashboardComponent implements OnInit {
     // this.currentUser = this.authService.getUser();
     this.setGreeting();
     this.loadStats();
+    this.loadQuotations();
   }
 
   /**
@@ -52,5 +56,27 @@ export class DashboardComponent implements OnInit {
     this.clientsService.getClients().subscribe(clients => {
       this.totalClients = clients.length;
     });
+  }
+
+  totalQuotations:any=0;
+   quotations: any[] = [];
+  approvedCount = 0;
+  approvedTotalAmount = 0;
+
+    loadQuotations(): void {
+    this.quotationsService.getQuotations().subscribe((data:any) => {
+      console.log('Fetched quotations:', data);
+      if(data && data.body && Array.isArray(data.body)) {
+        this.quotations = data.body;
+        this.totalQuotations = this.quotations.length
+        this.calculateApprovedStats();
+
+      }
+    });
+  }
+  calculateApprovedStats(): void {
+    const approved = this.quotations.filter(q => q.status === 2);
+    this.approvedCount = approved.length;
+    this.approvedTotalAmount = approved.reduce((sum, q) => sum + (q.totalamount || 0), 0);
   }
 }
