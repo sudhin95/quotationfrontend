@@ -43,9 +43,9 @@
             <th width="15%">Title:</th>
             <th width="20%">Company</th>
             <th width="15%">Email</th>
-            <th width="15%">Amount</th>
+            <th width="13%">Amount</th>
             <th width="15%">Status</th>
-            <th class="text-right" width="15%">Actions</th>
+            <th class="" width="17%">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -54,7 +54,9 @@
               class="table-row-animate">
             <td>
               <div class="client-name-cell">
-                <span class="client-name">{{ quotation.quotationnumber }}</span>
+                <a class="client-name quotation-link" [routerLink]="['/quotations/view', quotation.quotationid]">
+                  {{ quotation.quotationnumber }}
+                </a>
               </div>
             </td>
             <td>{{ quotation.title || '—' }}</td>
@@ -67,6 +69,12 @@
 
             <td class="text-right">
               <div class="action-buttons">
+                <button class="btn-icon" (click)="viewQuotation(quotation)" title="View quotation">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                </button>
                 <button class="btn-icon" (click)="editQuotation(quotation)" title="Edit quotation">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>

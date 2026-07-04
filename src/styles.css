@@ -495,3 +495,195 @@ table tbody tr:last-child td {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
+/* ============================================
+   QUOTATION PRINT STYLES (must be global —
+   Angular view encapsulation breaks `body *`
+   selectors if placed in a component's CSS)
+   ============================================ */
+
+.print-only {
+  display: none;
+}
+
+@media print {
+
+  /* Hide everything else in the app */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only the print template */
+  .print-only, .print-only * {
+    visibility: visible;
+  }
+
+  .print-only {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .print-page {
+    padding: 20mm;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #111827;
+    font-size: 12px;
+  }
+
+  .print-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  .print-company h1 {
+    font-size: 18px;
+    margin: 0 0 4px;
+  }
+  .print-company p {
+    font-size: 11px;
+    color: #6b7280;
+    margin: 2px 0;
+  }
+  .print-doc-title {
+    text-align: right;
+  }
+  .print-doc-title h2 {
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: #2f5be0;
+    margin: 0;
+  }
+  .print-quot-number {
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 4px;
+  }
+
+  .print-divider-thick {
+    height: 3px;
+    background: #2f5be0;
+    margin: 12px 0 20px;
+  }
+
+  .print-meta-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .print-meta-right {
+    text-align: right;
+  }
+  .print-meta-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #9ca3af;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .print-meta-value {
+    margin: 2px 0;
+    font-size: 12px;
+  }
+  .print-meta-value-strong {
+    margin: 2px 0;
+    font-size: 13px;
+    font-weight: bold;
+  }
+  .print-meta-table td {
+    padding: 3px 0 3px 20px;
+    font-size: 12px;
+  }
+
+  .print-title-section {
+    margin-bottom: 20px;
+  }
+  .print-title-text {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 4px 0 0;
+  }
+
+  .print-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+  }
+  .print-items-table th {
+    background: #f3f4f6;
+    text-align: left;
+    padding: 8px;
+    font-size: 10px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #d1d5db;
+  }
+  .print-items-table td {
+    padding: 8px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 11px;
+  }
+  .print-items-table .text-right {
+    text-align: right;
+  }
+
+  .print-totals-section {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 24px;
+  }
+  .print-totals-table {
+    width: 260px;
+  }
+  .print-totals-label {
+    font-size: 13px;
+    font-weight: bold;
+    padding: 8px;
+  }
+  .print-totals-value {
+    font-size: 15px;
+    font-weight: bold;
+    color: #2f5be0;
+    text-align: right;
+    padding: 8px;
+    border-top: 2px solid #111827;
+  }
+
+  .print-notes-section {
+    margin-bottom: 40px;
+  }
+  .print-notes-text {
+    font-size: 10px;
+    color: #6b7280;
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+
+  .print-signature-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 60px;
+  }
+  .print-signature-block {
+    width: 40%;
+  }
+  .print-signature-line {
+    border-bottom: 1px solid #111827;
+    height: 40px;
+  }
+
+  .print-footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 11px;
+    color: #9ca3af;
+  }
+
+  /* Force single-page-friendly page setup */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+}

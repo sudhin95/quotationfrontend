@@ -67,7 +67,7 @@ th, td {
 
 /* ACTIONS */
 .text-right {
-  text-align: right;
+  text-align: left;
 }
 
 /* ⚠️ FIXED ANIMATION (IMPORTANT) */
@@ -92,6 +92,16 @@ th, td {
   text-align: center;
   padding: 30px;
   color: #666;
+}
+
+.quotation-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.quotation-link:hover {
+  color: #2f5be0;
+  text-decoration: underline;
 }
 
 /* RESPONSIVE */

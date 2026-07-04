@@ -133,4 +133,8 @@ console.log('QuotationListComponent initialized');
       this.showToast = false;
     }, 3000);
   }
+
+    viewQuotation(quotation: any): void {
+      this.router.navigate(['/quotations/view', quotation.quotationid]);
+    }
 }

@@ -1,0 +1,97 @@
+.view-summary-strip {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.view-summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.view-label {
+  font-size: 12px;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.view-value {
+  font-size: 15px;
+  color: #111827;
+  font-weight: 600;
+}
+
+.view-divider {
+  height: 1px;
+  background: #eee;
+  margin: 20px 0;
+}
+
+.view-section-title {
+  font-size: 14px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 12px;
+}
+
+.view-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 32px;
+}
+.view-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.view-paragraph {
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  width: fit-content;
+}
+.status-draft   { background: #f3f4f6; color: #6b7280; }
+.status-pending { background: #fef3c7; color: #b45309; }
+.status-approved{ background: #d1fae5; color: #047857; }
+.status-rejected{ background: #fee2e2; color: #b91c1c; }
+
+.view-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.view-items-table th {
+  text-align: left;
+  padding: 10px 12px;
+  background: #f9fafb;
+  color: #6b7280;
+  font-size: 12px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #eee;
+}
+.view-items-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+}
+.text-right { text-align: left; }
+.text-muted { color: #c77700; font-style: italic; }
+.total-label { font-weight: 600; color: #6b7280; padding-top: 14px; }
+.total-value { font-weight: 700; font-size: 16px; color: #2f5be0; padding-top: 14px; }
+
+/* Print styles */
+@media print {
+  .page-header, .header-actions { display: none !important; }
+  .card { box-shadow: none !important; border: none !important; }
+}
+
