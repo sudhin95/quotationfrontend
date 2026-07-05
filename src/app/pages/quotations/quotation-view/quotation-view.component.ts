@@ -66,6 +66,12 @@ export class QuotationViewComponent implements OnInit {
     }
   }
 
+  editQuotation(): void {
+    if (this.quotationId) {
+      this.router.navigate(['/quotations/edit', this.quotationId]);
+    }
+  }
+
   printQuotation(): void {
     window.print();
   }

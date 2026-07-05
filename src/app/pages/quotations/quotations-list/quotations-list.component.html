@@ -16,7 +16,7 @@
 
   <!-- Search & Filters -->
   <div class="card">
-    <div class="card-header">
+    <!-- <div class="card-header">
       <div class="search-box">
         <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"/>
@@ -32,13 +32,80 @@
         >
       </div>
       <span class="client-count">{{ filteredQuotations.length }} quotation{{ filteredQuotations.length !== 1 ? 's' : '' }}</span>
+    </div> -->
+
+     <div class="card-header">
+    <div class="search-box">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search by name, company, or email..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="applyFilter()"
+        id="search-clients"
+      >
     </div>
+
+    <div class="header-right-controls">
+      <span class="client-count">{{ filteredQuotations.length }} quotation{{ filteredQuotations.length !== 1 ? 's' : '' }}</span>
+      <button class="btn-icon filter-toggle-btn" [class.active]="showFilters" (click)="toggleFilters()" title="Filters">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+        </svg>
+        Filters
+        <span class="filter-badge" *ngIf="activeFilterCount > 0">{{ activeFilterCount }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter Panel -->
+  <div class="filter-panel" *ngIf="showFilters">
+    <div class="filter-field">
+      <label>Status</label>
+      <select class="form-control" [(ngModel)]="filterStatus" (ngModelChange)="applyFilter()">
+        <option value="">All Statuses</option>
+        <option value="0">Draft</option>
+        <option value="1">Sent</option>
+        <option value="2">Approved</option>
+        <option value="3">Rejected</option>
+      </select>
+    </div>
+
+    <div class="filter-field">
+      <label>Quotation Date</label>
+      <input type="date" class="form-control" [(ngModel)]="filterQuotationDate" (ngModelChange)="applyFilter()">
+    </div>
+
+    <div class="filter-field">
+      <label>Created Date</label>
+      <input type="date" class="form-control" [(ngModel)]="filterCreatedDate" (ngModelChange)="applyFilter()">
+    </div>
+
+    <button class="btn btn-secondary btn-sm clear-filters-btn" (click)="clearFilters()" *ngIf="activeFilterCount > 0">
+      Clear Filters
+    </button>
+  </div>
 
     <!-- Table -->
     <div class="table-wrapper" *ngIf="filteredQuotations.length > 0">
       <table>
         <thead>
-          <tr>
+           <tr>
+            <th width="10%">Quotation No:</th>
+            <th width="15%">Title:</th>
+            <th width="16%">Company</th>
+            <th width="13%">Email</th>
+            <th width="10%">Amount</th>
+            <th width="12%">Status</th>
+            <th width="12%">Created On</th>
+            <th class="" width="12%">Actions</th>
+          </tr>
+
+          <!-- <tr>
             <th width="8%">Quotation No:</th>
             <th width="17%">Title:</th>
             <th width="20%">Company</th>
@@ -46,17 +113,18 @@
             <th width="13%">Amount</th>
             <th width="15%">Status</th>
             <th class="" width="17%">Actions</th>
-          </tr>
+          </tr> -->
         </thead>
         <tbody>
           <tr *ngFor="let quotation of filteredQuotations; let i = index"
               [style.animation-delay]="(i * 30) + 'ms'"
               class="table-row-animate">
             <td>
-              <div class="client-name-cell">
+              <div class="quotation-number-stack">
                 <a class="client-name quotation-link" [routerLink]="['/quotations/view', quotation.quotationid]">
                   {{ quotation.quotationnumber }}
                 </a>
+                <span class="quotation-date-sub">{{ quotation.quotationdate | date:'mediumDate' }}</span>
               </div>
             </td>
             <td>{{ quotation.title || '—' }}</td>
@@ -70,6 +138,10 @@
                 {{ quotation.statusname || '—' }}
               </span>
             </td>
+
+            <td>
+            <span class="created-date-text">{{ quotation.createdon | date:'mediumDate' }}</span>
+          </td>
 
             <td class="text-right">
               <div class="action-buttons">

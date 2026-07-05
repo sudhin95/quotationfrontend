@@ -17,6 +17,10 @@ export class QuotationsListComponent implements OnInit {
   filteredQuotations: any[] = [];
   searchTerm = '';
   isLoading = true;
+  showFilters = false;
+  filterStatus = '';
+  filterQuotationDate = '';
+  filterCreatedDate = '';
 
   // Delete confirmation dialog state
   showDeleteDialog = false;
@@ -33,10 +37,29 @@ export class QuotationsListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
-console.log('QuotationListComponent initialized');
     this.loadQuotations();
   }
+
+   toggleFilters(): void {
+    this.showFilters = !this.showFilters;
+  }
+
+   get activeFilterCount(): number {
+    let count = 0;
+    if (this.filterStatus !== '') count++;
+    if (this.filterQuotationDate !== '') count++;
+    if (this.filterCreatedDate !== '') count++;
+    return count;
+  }
+
+
+  clearFilters(): void {
+    this.filterStatus = '';
+    this.filterQuotationDate = '';
+    this.filterCreatedDate = '';
+    this.applyFilter();
+  }
+
 
   /**
    * Fetch all quotations from the service.
@@ -57,20 +80,35 @@ console.log('QuotationListComponent initialized');
    * Filter the quotation list by name, company, or email.
    */
 
+
   applyFilter(): void {
     const term = this.searchTerm.toLowerCase().trim();
+    this.filteredQuotations = this.quotations.filter(quotation => {
 
-    if (!term) {
-      this.filteredQuotations = [...this.quotations];
-      return;
-    }
+      const matchesSearch = !term ||
+        (quotation.quotationnumber ?? '').toString().toLowerCase().includes(term) ||
+        (quotation.phone ?? '').toString().toLowerCase().includes(term) ||
+        (quotation.email ?? '').toLowerCase().includes(term) ||
+        (quotation.title ?? '').toLowerCase().includes(term) ||
+        (quotation.totalamount ?? '').toString().toLowerCase().includes(term)
+      const matchesStatus = this.filterStatus === '' ||
+        Number(quotation.status) === Number(this.filterStatus);
 
-    this.filteredQuotations = this.quotations.filter(quotation =>
-      (quotation.quotationnumber ?? '').toString().toLowerCase().includes(term) ||
-      (quotation.phone ?? '').toString().toLowerCase().includes(term) ||
-      (quotation.email ?? '').toLowerCase().includes(term) ||
-      (quotation.title ?? '').toLowerCase().includes(term)
-    );
+      const matchesQuotationDate = this.filterQuotationDate === '' ||
+        this.isSameDate(quotation.quotationdate, this.filterQuotationDate);
+
+      const matchesCreatedDate = this.filterCreatedDate === '' ||
+        this.isSameDate(quotation.createdon, this.filterCreatedDate);
+
+      return matchesSearch && matchesStatus && matchesQuotationDate && matchesCreatedDate;
+    });
+  }
+
+  private isSameDate(dbDateValue: string, filterDateValue: string): boolean {
+    if (!dbDateValue) return false;
+    const dbDate = new Date(dbDateValue);
+    const dbDateStr = dbDate.toISOString().slice(0, 10); // "YYYY-MM-DD"
+    return dbDateStr === filterDateValue;
   }
 
   /**
@@ -138,12 +176,12 @@ console.log('QuotationListComponent initialized');
     }
 
    getStatusBadgeClass(statusName: string): string {
-  switch ((statusName || '').toLowerCase()) {
-    case 'draft':    return 'status-draft';
-    case 'sent':     return 'status-sent';
-    case 'approved': return 'status-approved';
-    case 'rejected': return 'status-rejected';
-    default:         return '';
+    switch ((statusName || '').toLowerCase()) {
+      case 'draft':    return 'status-draft';
+      case 'sent':     return 'status-sent';
+      case 'approved': return 'status-approved';
+      case 'rejected': return 'status-rejected';
+      default:         return '';
+    }
   }
-}
 }
