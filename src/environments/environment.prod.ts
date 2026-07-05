@@ -2,6 +2,7 @@
   production: false,
 
   apiUrl: 'https://quotationbackend.onrender.com/',
+  //  apiUrl: 'http://localhost:5200/',
 
   appName: 'Quotation Management System',
 
