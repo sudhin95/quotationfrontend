@@ -104,5 +104,16 @@ export class QuotationViewComponent implements OnInit {
     }, 3000);
   }
 
+  
+  getStatusTranslationKey(statusLabel: string): string {
+    switch ((statusLabel || '').toLowerCase()) {
+      case 'draft':    return 'QUOTATIONS.STATUS_DRAFT';
+      case 'sent':     return 'QUOTATIONS.STATUS_SENT';
+      case 'approved': return 'QUOTATIONS.STATUS_APPROVED';
+      case 'rejected': return 'QUOTATIONS.STATUS_REJECTED';
+      default:         return '';
+    }
+  }
+
 
 }

@@ -6,6 +6,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { QuotationViewComponent } from './quotation-view/quotation-view.component';
+import { TranslateModule } from '@ngx-translate/core';
+
 
 const routes: Routes = [
   { path: '', component: QuotationsListComponent },
@@ -27,6 +29,7 @@ const routes: Routes = [
     FormsModule,
     NgSelectModule,
     RouterModule.forChild(routes),
+    TranslateModule
   ]
 })
 export class QuotationsModule { }

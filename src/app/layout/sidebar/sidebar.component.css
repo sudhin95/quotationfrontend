@@ -144,6 +144,22 @@
 .logout-btn:hover {
   color: var(--color-danger) !important;
 }
+html[dir="rtl"] .sidebar {
+  left: auto;
+  right: 0;
+}
+
+html[dir="rtl"] .sidebar-menu a {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+/* If your main content area has margin-left to account for the sidebar,
+   it needs to flip to margin-right instead */
+html[dir="rtl"] .main-content {
+  margin-left: 0;
+  margin-right: 240px; /* match whatever your actual sidebar width is */
+}
 
 /* Mobile */
 @media (max-width: 768px) {

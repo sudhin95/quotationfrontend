@@ -687,3 +687,142 @@ table tbody tr:last-child td {
     margin: 0;
   }
 }
+
+/* ============================================
+   RTL LAYOUT OVERRIDES (Arabic)
+   Add this block to the END of src/styles.css
+   Activated automatically when <html dir="rtl">
+   is set by the language switcher component.
+   ============================================ */
+
+html[dir="rtl"] body {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Page header: title on the right, action button on the left */
+html[dir="rtl"] .page-header {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .header-actions,
+html[dir="rtl"] .header-right-controls {
+  flex-direction: row-reverse;
+}
+
+/* Search bar + filter button row */
+html[dir="rtl"] .card-header {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .search-icon {
+  left: auto;
+  right: 12px;
+}
+
+html[dir="rtl"] .search-box input {
+  padding-left: 12px;
+  padding-right: 36px;
+  text-align: right;
+}
+
+/* Filter panel */
+html[dir="rtl"] .filter-panel {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .filter-field {
+  text-align: right;
+}
+
+/* Tables: header + cells align right instead of left */
+html[dir="rtl"] table th,
+html[dir="rtl"] table td {
+  text-align: right;
+}
+
+/* Actions column stays visually consistent (icons don't mirror) */
+html[dir="rtl"] .action-buttons {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .text-right {
+  text-align: left;
+}
+
+/* Quotation number + date stack */
+html[dir="rtl"] .quotation-number-stack {
+  align-items: flex-end;
+}
+
+/* Client name cell (avatar/link layout) */
+html[dir="rtl"] .client-name-cell {
+  flex-direction: row-reverse;
+}
+
+/* Form rows: two-column layout mirrors */
+html[dir="rtl"] .form-row {
+  direction: rtl;
+}
+
+html[dir="rtl"] .form-group label {
+  text-align: right;
+}
+
+/* Item row grid inside quotation items section */
+html[dir="rtl"] .item-row-grid {
+  direction: rtl;
+}
+
+/* AI Drawer slides in from the left instead of the right */
+html[dir="rtl"] .ai-drawer {
+  right: auto;
+  left: -480px;
+  box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+}
+
+html[dir="rtl"] .ai-drawer.open {
+  left: 0;
+}
+
+html[dir="rtl"] .ai-drawer-header,
+html[dir="rtl"] .ai-drawer-footer {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .ai-item-card-header {
+  flex-direction: row-reverse;
+}
+
+/* Status badges, toast notifications: no mirroring needed,
+   but toast position often needs to flip */
+html[dir="rtl"] .toast {
+  right: auto;
+  left: 20px;
+}
+
+/* View page summary strip + meta grid */
+html[dir="rtl"] .view-summary-strip {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .view-grid {
+  direction: rtl;
+}
+
+/* Print layout mirrors too, if printing in Arabic */
+@media print {
+  html[dir="rtl"] .print-header {
+    flex-direction: row-reverse;
+  }
+  html[dir="rtl"] .print-meta-row {
+    flex-direction: row-reverse;
+  }
+  html[dir="rtl"] .print-items-table th,
+  html[dir="rtl"] .print-items-table td {
+    text-align: right;
+  }
+  html[dir="rtl"] .print-items-table .text-right {
+    text-align: left;
+  }
+}

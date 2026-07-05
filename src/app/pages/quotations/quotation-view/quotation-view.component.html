@@ -2,36 +2,32 @@
   <!-- Page Header -->
   <div class="page-header">
     <div>
-      <h1>Quotation Details</h1>
-      <p>View quotation information and items</p>
+      <h1>{{ 'QUOTATIONS.VIEW_PAGE_TITLE' | translate }}</h1>
+      <p>{{ 'QUOTATIONS.VIEW_PAGE_SUBTITLE' | translate }}</p>
     </div>
     <div class="header-actions">
       <ng-container *ngIf="quotation" [ngSwitch]="quotation.statusid">
 
-   
+        <!-- statusId == 1: Show "Approve" -->
+        <ng-container *ngSwitchCase="1">
+          <button class="btn btn-primary" (click)="approveQuotation()" style="margin-right:8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            {{ 'QUOTATIONS.APPROVE' | translate }}
+          </button>
+        </ng-container>
 
-  <!-- statusId == 1: Show "Approve" and "Reject" -->
-    <ng-container *ngSwitchCase="1">
-      <button class="btn btn-primary" (click)="approveQuotation()" style="margin-right:8px;">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="20 6 9 17 4 12"/>
-      </svg>
-      Approve
-      </button>
+        <!-- statusId == 2 or 3: nothing shown -->
 
-   
-  </ng-container>
+      </ng-container>
 
-  <!-- statusId == 2 or 3: nothing shown -->
-
-</ng-container>
-    
       <button class="btn btn-secondary" (click)="editQuotation()" style="margin-right:8px;background: lightblue;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
         </svg>
-        Edit
+        {{ 'COMMON.EDIT' | translate }}
       </button>
 
       <button class="btn btn-secondary" (click)="printQuotation()" style="margin-right:8px;">
@@ -40,14 +36,14 @@
           <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
           <rect x="6" y="14" width="12" height="8"/>
         </svg>
-        Print
+        {{ 'QUOTATIONS.PRINT' | translate }}
       </button>
       <button class="btn btn-secondary" (click)="goBack()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="19" y1="12" x2="5" y2="12"/>
           <polyline points="12 19 5 12 12 5"/>
         </svg>
-        Back to Quotations
+        {{ 'QUOTATIONS.BACK_TO_QUOTATIONS' | translate }}
       </button>
     </div>
   </div>
@@ -56,7 +52,7 @@
   <div class="card" *ngIf="isLoading">
     <div class="card-body loading-state">
       <div class="spinner-large"></div>
-      <p>Loading quotation details...</p>
+      <p>{{ 'COMMON.LOADING_QUOTATION' | translate }}</p>
     </div>
   </div>
 
@@ -67,17 +63,17 @@
       <!-- Top summary strip -->
       <div class="view-summary-strip">
         <div class="view-summary-item">
-          <span class="view-label">Quotation Number</span>
+          <span class="view-label">{{ 'QUOTATIONS.QUOTATION_NUMBER' | translate }}</span>
           <span class="view-value">{{ quotation.quotnumber }}</span>
         </div>
         <div class="view-summary-item">
-          <span class="view-label">Status</span>
+          <span class="view-label">{{ 'QUOTATIONS.TABLE_STATUS' | translate }}</span>
           <span class="status-badge" [ngClass]="getStatusClass(quotation.statusid)">
-            {{ quotation.status }}
+            {{ getStatusTranslationKey(quotation.status) | translate }}
           </span>
         </div>
         <div class="view-summary-item">
-          <span class="view-label">Quotation Date</span>
+          <span class="view-label">{{ 'QUOTATIONS.QUOTATION_DATE' | translate }}</span>
           <span class="view-value">{{ quotation.quotationDate | date:'medium' }}</span>
         </div>
       </div>
@@ -85,22 +81,22 @@
       <div class="view-divider"></div>
 
       <!-- Client Info -->
-      <h3 class="view-section-title">Client Information</h3>
+      <h3 class="view-section-title">{{ 'QUOTATIONS.CLIENT_INFO_TITLE' | translate }}</h3>
       <div class="view-grid">
         <div class="view-field">
-          <span class="view-label">Client Name</span>
+          <span class="view-label">{{ 'QUOTATIONS.CLIENT_NAME' | translate }}</span>
           <span class="view-value">{{ quotation.clientname || '-' }}</span>
         </div>
         <div class="view-field">
-          <span class="view-label">Company</span>
+          <span class="view-label">{{ 'QUOTATIONS.COMPANY_LABEL' | translate }}</span>
           <span class="view-value">{{ quotation.companyname || '-' }}</span>
         </div>
         <div class="view-field">
-          <span class="view-label">Email</span>
+          <span class="view-label">{{ 'QUOTATIONS.EMAIL_ADDRESS' | translate }}</span>
           <span class="view-value">{{ quotation.email || '-' }}</span>
         </div>
         <div class="view-field">
-          <span class="view-label">Phone</span>
+          <span class="view-label">{{ 'QUOTATIONS.PHONE_NUMBER' | translate }}</span>
           <span class="view-value">{{ quotation.phone || '-' }}</span>
         </div>
       </div>
@@ -108,26 +104,26 @@
       <div class="view-divider"></div>
 
       <!-- Title / Description -->
-      <h3 class="view-section-title">Quotation Title</h3>
+      <h3 class="view-section-title">{{ 'QUOTATIONS.QUOTATION_TITLE_LABEL' | translate }}</h3>
       <p class="view-paragraph">{{ quotation.title || '-' }}</p>
 
-      <ng-container *ngIf="quotation.description" >
-        <h3 class="view-section-title" style="margin-top:20px">Description</h3>
+      <ng-container *ngIf="quotation.description">
+        <h3 class="view-section-title" style="margin-top:20px">{{ 'QUOTATIONS.DESCRIPTION' | translate }}</h3>
         <p class="view-paragraph">{{ quotation.description }}</p>
       </ng-container>
 
       <div class="view-divider"></div>
 
       <!-- Items Table -->
-      <h3 class="view-section-title">Quotation Items</h3>
+      <h3 class="view-section-title">{{ 'QUOTATIONS.ITEMS_TABLE_TITLE' | translate }}</h3>
       <table class="view-items-table">
         <thead>
           <tr>
-            <th width="20%">Title</th>
-            <th width="40%">Description</th>
-            <th class="text-right" width="10%">Qty</th>
-            <th class="text-right" width="15%">Unit Price</th>
-            <th class="text-right" width="15%">Total</th>
+            <th width="20%">{{ 'QUOTATIONS.TITLE' | translate }}</th>
+            <th width="40%">{{ 'QUOTATIONS.DESCRIPTION' | translate }}</th>
+            <th class="text-right" width="10%">{{ 'QUOTATIONS.QUANTITY' | translate }}</th>
+            <th class="text-right" width="15%">{{ 'QUOTATIONS.UNIT_PRICE' | translate }}</th>
+            <th class="text-right" width="15%">{{ 'QUOTATIONS.TOTAL' | translate }}</th>
           </tr>
         </thead>
         <tbody>
@@ -137,17 +133,17 @@
             <td class="text-right">{{ item.quantity }}</td>
             <td class="text-right">
               <span *ngIf="item.unitprice !== null">BHD {{ item.unitprice | number:'1.3-3' }}</span>
-              <span *ngIf="item.unitprice === null" class="text-muted">TBD</span>
+              <span *ngIf="item.unitprice === null" class="text-muted">{{ 'QUOTATIONS.AI_PRICE_TBD' | translate }}</span>
             </td>
             <td class="text-right">
               <span *ngIf="item.totalprice !== null">BHD {{ item.totalprice | number:'1.3-3' }}</span>
-              <span *ngIf="item.totalprice === null" class="text-muted">TBD</span>
+              <span *ngIf="item.totalprice === null" class="text-muted">{{ 'QUOTATIONS.AI_PRICE_TBD' | translate }}</span>
             </td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="4" class="text-right total-label">Total Amount</td>
+            <td colspan="4" class="text-right total-label">{{ 'QUOTATIONS.TOTAL_AMOUNT' | translate }}</td>
             <td class="text-right total-value">BHD {{ quotation.totalamount | number:'1.3-3' }}</td>
           </tr>
         </tfoot>
@@ -159,7 +155,7 @@
   <!-- Not found -->
   <div class="card" *ngIf="!isLoading && !quotation">
     <div class="card-body loading-state">
-      <p>Quotation not found.</p>
+      <p>{{ 'COMMON.NOT_FOUND' | translate }}</p>
     </div>
   </div>
 </div>
@@ -177,7 +173,7 @@
         <p>{{ companyInfo.phone }} · {{ companyInfo.email }}</p>
       </div>
       <div class="print-doc-title">
-        <h2>QUOTATION</h2>
+        <h2>{{ 'QUOTATIONS.VIEW_PAGE_TITLE' | translate | uppercase }}</h2>
         <p class="print-quot-number">{{ quotation.quotnumber }}</p>
       </div>
     </div>
@@ -187,7 +183,7 @@
     <!-- Meta info: Bill To + Quote Info -->
     <div class="print-meta-row">
       <div class="print-meta-block">
-        <span class="print-meta-label">Quoted To</span>
+        <span class="print-meta-label">{{ 'QUOTATIONS.QUOTED_TO' | translate }}</span>
         <p class="print-meta-value-strong">{{ quotation.clientname }}</p>
         <p class="print-meta-value">{{ quotation.companyname }}</p>
         <p class="print-meta-value">{{ quotation.email }}</p>
@@ -197,12 +193,12 @@
       <div class="print-meta-block print-meta-right">
         <table class="print-meta-table">
           <tr>
-            <td class="print-meta-label">Quotation Date</td>
+            <td class="print-meta-label">{{ 'QUOTATIONS.QUOTATION_DATE' | translate }}</td>
             <td class="print-meta-value-strong">{{ quotation.quotationDate | date:'mediumDate' }}</td>
           </tr>
           <tr>
-            <td class="print-meta-label">Status</td>
-            <td class="print-meta-value-strong">{{ quotation.status }}</td>
+            <td class="print-meta-label">{{ 'QUOTATIONS.STATUS' | translate }}</td>
+            <td class="print-meta-value-strong">{{ getStatusTranslationKey(quotation.status) | translate }}</td>
           </tr>
         </table>
       </div>
@@ -210,7 +206,7 @@
 
     <!-- Title -->
     <div class="print-title-section">
-      <span class="print-meta-label">Quotation Title</span>
+      <span class="print-meta-label">{{ 'QUOTATIONS.QUOTATION_TITLE_LABEL' | translate }}</span>
       <p class="print-title-text">{{ quotation.title }}</p>
     </div>
 
@@ -218,11 +214,11 @@
     <table class="print-items-table">
       <thead>
         <tr>
-          <th style="width: 30%;">Item</th>
-          <th style="width: 30%;">Description</th>
-          <th style="width: 10%;" class="text-right">Qty</th>
-          <th style="width: 15%;" class="text-right">Unit Price</th>
-          <th style="width: 15%;" class="text-right">Total</th>
+          <th style="width: 30%;">{{ 'QUOTATIONS.TABLE_ITEM' | translate }}</th>
+          <th style="width: 30%;">{{ 'QUOTATIONS.DESCRIPTION' | translate }}</th>
+          <th style="width: 10%;" class="text-right">{{ 'QUOTATIONS.QUANTITY' | translate }}</th>
+          <th style="width: 15%;" class="text-right">{{ 'QUOTATIONS.UNIT_PRICE' | translate }}</th>
+          <th style="width: 15%;" class="text-right">{{ 'QUOTATIONS.TOTAL' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -232,11 +228,11 @@
           <td class="text-right">{{ item.quantity }}</td>
           <td class="text-right">
             <span *ngIf="item.unitprice !== null">BHD {{ item.unitprice | number:'1.3-3' }}</span>
-            <span *ngIf="item.unitprice === null">TBD</span>
+            <span *ngIf="item.unitprice === null">{{ 'QUOTATIONS.AI_PRICE_TBD' | translate }}</span>
           </td>
           <td class="text-right">
             <span *ngIf="item.totalprice !== null">BHD {{ item.totalprice | number:'1.3-3' }}</span>
-            <span *ngIf="item.totalprice === null">TBD</span>
+            <span *ngIf="item.totalprice === null">{{ 'QUOTATIONS.AI_PRICE_TBD' | translate }}</span>
           </td>
         </tr>
       </tbody>
@@ -246,7 +242,7 @@
     <div class="print-totals-section">
       <table class="print-totals-table">
         <tr>
-          <td class="print-totals-label">Total Amount</td>
+          <td class="print-totals-label">{{ 'QUOTATIONS.TOTAL_AMOUNT' | translate }}</td>
           <td class="print-totals-value">BHD {{ quotation.totalamount | number:'1.3-3' }}</td>
         </tr>
       </table>
@@ -254,10 +250,9 @@
 
     <!-- Notes / Terms -->
     <div class="print-notes-section">
-      <span class="print-meta-label">Terms & Notes</span>
+      <span class="print-meta-label">{{ 'QUOTATIONS.TERMS_AND_NOTES' | translate }}</span>
       <p class="print-notes-text">
-        This quotation is valid for 15 days from the date issued. Prices are quoted in Bahraini Dinar (BHD)
-        and are subject to change without prior notice after expiry.
+        {{ 'QUOTATIONS.TERMS_TEXT' | translate }}
       </p>
     </div>
 
@@ -265,17 +260,17 @@
     <div class="print-signature-row">
       <div class="print-signature-block">
         <div class="print-signature-line"></div>
-        <span class="print-meta-label">Authorized Signature</span>
+        <span class="print-meta-label">{{ 'QUOTATIONS.AUTHORIZED_SIGNATURE' | translate }}</span>
       </div>
       <div class="print-signature-block">
         <div class="print-signature-line"></div>
-        <span class="print-meta-label">Client Acceptance</span>
+        <span class="print-meta-label">{{ 'QUOTATIONS.CLIENT_ACCEPTANCE' | translate }}</span>
       </div>
     </div>
 
     <!-- Footer -->
     <div class="print-footer">
-      <p>Thank you for your business.</p>
+      <p>{{ 'QUOTATIONS.THANK_YOU_FOOTER' | translate }}</p>
     </div>
 
   </div>

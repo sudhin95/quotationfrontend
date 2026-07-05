@@ -184,4 +184,13 @@ export class QuotationsListComponent implements OnInit {
       default:         return '';
     }
   }
+    getStatusTranslationKey(statusName: string): string {
+    switch ((statusName || '').toLowerCase()) {
+      case 'draft':    return 'QUOTATIONS.STATUS_DRAFT';
+      case 'sent':     return 'QUOTATIONS.STATUS_SENT';
+      case 'approved': return 'QUOTATIONS.STATUS_APPROVED';
+      case 'rejected': return 'QUOTATIONS.STATUS_REJECTED';
+      default:         return '';
+    }
+  }
 }

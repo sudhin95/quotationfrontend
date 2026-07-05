@@ -10,7 +10,7 @@
         <line x1="16" y1="17" x2="8" y2="17" />
       </svg>
     </div>
-    <span class="brand-text" *ngIf="!isCollapsed">Quotation Builder</span>
+    <span class="brand-text" *ngIf="!isCollapsed">{{ brandText }}</span>
   </div>
 
   <!-- Navigation -->
@@ -60,7 +60,7 @@
           <span class="nav-label" *ngIf="!isCollapsed">{{ item.label }}</span>
 
           <!-- "Coming soon" badge -->
-          <span class="coming-soon" *ngIf="item.disabled && !isCollapsed">Soon</span>
+          <span class="coming-soon" *ngIf="item.disabled && !isCollapsed">{{ comingSoonText }}</span>
         </a>
       </li>
     </ul>
@@ -68,23 +68,23 @@
 
   <!-- Bottom section — collapse toggle + logout -->
   <div class="sidebar-footer">
-    <button class="nav-link footer-btn" (click)="onToggle()" title="Toggle sidebar">
+    <button class="nav-link footer-btn" (click)="onToggle()" [title]="toggleSidebarTitle">
       <svg class="nav-icon toggle-icon" [class.rotated]="isCollapsed" width="20" height="20" viewBox="0 0 24 24"
         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="11 17 6 12 11 7" />
         <polyline points="18 17 13 12 18 7" />
       </svg>
-      <span class="nav-label" *ngIf="!isCollapsed">Collapse</span>
+      <span class="nav-label" *ngIf="!isCollapsed">{{ collapseLabel }}</span>
     </button>
 
-    <button class="nav-link footer-btn logout-btn" (click)="logout()" title="Logout">
+    <button class="nav-link footer-btn logout-btn" (click)="logout()" [title]="logoutTitle">
       <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
         <polyline points="16 17 21 12 16 7" />
         <line x1="21" y1="12" x2="9" y2="12" />
       </svg>
-      <span class="nav-label" *ngIf="!isCollapsed">Logout</span>
+      <span class="nav-label" *ngIf="!isCollapsed">{{ logoutLabel }}</span>
     </button>
   </div>
 </aside>

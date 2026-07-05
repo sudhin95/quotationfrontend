@@ -2,21 +2,23 @@
   <!-- Page Header -->
   <div class="page-header">
     <div>
-      <h1>{{ pageTitle }}</h1>
-      <p>{{ isEditMode ? 'Update the quotation details below' : 'Fill in the details to add a new quotation' }}</p>
+      <!-- <h1>{{ pageTitle }}</h1> -->
+      <h1>{{ (isEditMode ? 'QUOTATIONS.PAGE_TITLE_EDIT' : 'QUOTATIONS.PAGE_TITLE_NEW') | translate }}</h1>
+      <p>{{ (isEditMode ? 'QUOTATIONS.FORM_SUBTITLE_EDIT' : 'QUOTATIONS.FORM_SUBTITLE_NEW') | translate }}</p>
     </div>
 
-      <div class="header-actions">
-    <button class="btn btn-ai-suggest" (click)="openAiDrawer()">
-      ✨ Suggest with AI
-    </button>
-    <button class="btn btn-secondary" (click)="cancel()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="19" y1="12" x2="5" y2="12"/>
-        <polyline points="12 19 5 12 12 5"/>
-      </svg>
-      Back to Quotations
-    </button>
+    <div class="header-actions">
+      <button class="btn btn-ai-suggest" (click)="openAiDrawer()">
+        ✨ {{ 'QUOTATIONS.AI_SUGGEST_BUTTON' | translate }}
+      </button>
+      <button class="btn btn-secondary" (click)="cancel()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        {{ 'QUOTATIONS.BACK_TO_QUOTATIONS' | translate }}
+      </button>
+    </div>
   </div>
 
   <!-- Form Card -->
@@ -24,294 +26,258 @@
     <div class="card-body">
       <form [formGroup]="QuotationForm" (ngSubmit)="onSubmit()" novalidate>
 
-        <!-- Two-column row -->
-        <div class="form-row">
-          <!-- Name -->
-          <div class="form-group">
-            <label for="name">Quotation Number <span class="required">*</span></label>
-            <input
-              type="text"
-              id="name"
-              class="form-control"
-              formControlName="quotnumber"
-              placeholder="e.g. Q-1001"
-              [class.is-invalid]="f['quotnumber'].touched && f['quotnumber'].invalid"
-              readonly
-            >
-            <div class="invalid-feedback" *ngIf="f['quotnumber'].touched && f['quotnumber'].errors">
-              <span *ngIf="f['quotnumber'].errors['required']">Quotation number is required</span>
-              <span *ngIf="f['quotnumber'].errors['minlength']">Quotation number must be at least 2 characters</span>
-            </div>
-          </div>
-
-          <!-- Company -->
-          <div class="form-group">
-                        <label for="company">Company</label>
-
-                        <ng-select
-    id="clientid"
-    [items]="clients"
-    bindLabel="company"
-    bindValue="clientid"
-    placeholder="Select Company"
-    formControlName="clientid"
-    [class.is-invalid]="f['clientid'].touched && f['clientid'].invalid"
-    (change)="onCompanyChange($event)">
-</ng-select>
-
-
-            <!-- <select
-                id="clientid"
-                class="form-control"
-                formControlName="clientid" (change)="onCompanyChange($event)">
-                <option value="">Select Company</option>
-                <option *ngFor="let company of clients" [value]="company.clientid" >
-                    {{ company.name }}
-                </option>
-                </select> -->
-          
-          </div>
-        </div>
-
-        <!-- Two-column row -->
-        <div class="form-row">
-          <!-- Email -->
-          <div class="form-group">
-            <label for="email">Email Address <span class="required">*</span></label>
-            <input
-              type="email"
-              id="email"
-              class="form-control"
-              formControlName="email"
-              placeholder="e.g. john@acme.com"
-              [class.is-invalid]="f['email'].touched && f['email'].invalid"
-              readonly
-            >
-            <div class="invalid-feedback" *ngIf="f['email'].touched && f['email'].errors">
-              <span *ngIf="f['email'].errors['required']">Email is required</span>
-              <span *ngIf="f['email'].errors['email']">Please enter a valid email</span>
-            </div>
-          </div>
-
-          <!-- Phone -->
-          <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input
-              type="tel"
-              id="phone"
-              class="form-control"
-              formControlName="phone"
-              placeholder="e.g. +973 33123456"
-              readonly
-            >
-          </div>
-        </div>
-
-
-
-
-        <!-- Notes (full width) -->
-        <div class="form-row">
+          <!-- Two-column row -->
+          <div class="form-row">
+            <!-- Quotation Number -->
             <div class="form-group">
-            <label for="notes">Title</label>
-            <input
+              <label for="name">{{ 'QUOTATIONS.QUOTATION_NUMBER' | translate }} <span class="required">*</span></label>
+              <input
+                type="text"
+                id="name"
+                class="form-control"
+                formControlName="quotnumber"
+                placeholder="e.g. Q-1001"
+                [class.is-invalid]="f['quotnumber'].touched && f['quotnumber'].invalid"
+                readonly
+              >
+              <div class="invalid-feedback" *ngIf="f['quotnumber'].touched && f['quotnumber'].errors">
+                <span *ngIf="f['quotnumber'].errors['required']">{{ 'VALIDATION.REQUIRED_QUOT_NUMBER' | translate }}</span>
+                <span *ngIf="f['quotnumber'].errors['minlength']">{{ 'VALIDATION.MIN_LENGTH_QUOT_NUMBER' | translate }}</span>
+              </div>
+            </div>
+
+            <!-- Company -->
+            <div class="form-group">
+              <label for="company">{{ 'QUOTATIONS.COMPANY' | translate }}</label>
+
+              <ng-select
+                id="clientid"
+                [items]="clients"
+                bindLabel="company"
+                bindValue="clientid"
+                [placeholder]="'QUOTATIONS.SELECT_COMPANY' | translate"
+                formControlName="clientid"
+                [class.is-invalid]="f['clientid'].touched && f['clientid'].invalid"
+                (change)="onCompanyChange($event)">
+              </ng-select>
+            </div>
+          </div>
+
+          <!-- Two-column row -->
+          <div class="form-row">
+            <!-- Email -->
+            <div class="form-group">
+              <label for="email">{{ 'QUOTATIONS.EMAIL_ADDRESS' | translate }} <span class="required">*</span></label>
+              <input
+                type="email"
+                id="email"
+                class="form-control"
+                formControlName="email"
+                placeholder="e.g. john@acme.com"
+                [class.is-invalid]="f['email'].touched && f['email'].invalid"
+                readonly
+              >
+              <div class="invalid-feedback" *ngIf="f['email'].touched && f['email'].errors">
+                <span *ngIf="f['email'].errors['required']">{{ 'VALIDATION.REQUIRED_EMAIL' | translate }}</span>
+                <span *ngIf="f['email'].errors['email']">{{ 'VALIDATION.INVALID_EMAIL' | translate }}</span>
+              </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="form-group">
+              <label for="phone">{{ 'QUOTATIONS.PHONE_NUMBER' | translate }}</label>
+              <input
+                type="tel"
+                id="phone"
+                class="form-control"
+                formControlName="phone"
+                placeholder="e.g. +973 33123456"
+                readonly
+              >
+            </div>
+          </div>
+
+          <!-- Title / Quotation Date -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="notes">{{ 'QUOTATIONS.TITLE' | translate }}</label>
+              <input
                 id="title"
                 class="form-control"
                 formControlName="title"
-                placeholder="Quotation Title"
-            >
+                [placeholder]="'QUOTATIONS.TITLE' | translate"
+              >
             </div>
 
             <div class="form-group">
-                <label for="quotationDate">
-                Quotation Date <span class="required">*</span>
-                </label>
+              <label for="quotationDate">
+                {{ 'QUOTATIONS.QUOTATION_DATE' | translate }} <span class="required">*</span>
+              </label>
 
-                <input
+              <input
                 #quotationDateInput
                 type="datetime-local"
                 id="quotationDate"
                 class="form-control"
                 formControlName="quotationDate"
-                 (click)="openDatePicker(quotationDateInput)"
+                (click)="openDatePicker(quotationDateInput)"
                 [class.is-invalid]="f['quotationDate'].touched && f['quotationDate'].invalid"
-                >
+              >
 
-                <div class="invalid-feedback"
-                    *ngIf="f['quotationDate']?.touched && f['quotationDate']?.errors">
+              <div class="invalid-feedback"
+                  *ngIf="f['quotationDate']?.touched && f['quotationDate']?.errors">
                 <span *ngIf="f['quotationDate']?.errors?.['required']">
-                    Quotation date is required
+                  {{ 'VALIDATION.REQUIRED_DATE' | translate }}
                 </span>
-                </div>
+              </div>
             </div>
+          </div>
 
-        </div>
-
-        <div class="form-row">
-          <!-- Email -->
-          <div class="form-group">
-        
-
-             <label for="status">Status <span class="required">*</span></label>
+          <!-- Status / Total Amount -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="status">{{ 'QUOTATIONS.STATUS' | translate }} <span class="required">*</span></label>
 
               <select
                 id="status"
                 class="form-control"
                 formControlName="status">
-                <option [value]="0">Draft</option>
-                <option [value]="1">Sent</option>
-                <option [value]="2">Approved</option>
-                <option [value]="3">Rejected</option>
+                <option [value]="0">{{ 'QUOTATIONS.STATUS_DRAFT' | translate }}</option>
+                <option [value]="1">{{ 'QUOTATIONS.STATUS_SENT' | translate }}</option>
+                <option [value]="2">{{ 'QUOTATIONS.STATUS_APPROVED' | translate }}</option>
+                <option [value]="3">{{ 'QUOTATIONS.STATUS_REJECTED' | translate }}</option>
               </select>
-          
+            </div>
+
+            <div class="form-group">
+              <label for="phone">{{ 'QUOTATIONS.TOTAL_AMOUNT' | translate }}</label>
+              <input
+                type="text"
+                id="totalamount"
+                class="form-control"
+                formControlName="totalamount"
+                placeholder="e.g. 3000"
+              >
+            </div>
           </div>
 
-          <!-- Phone -->
+          <!-- Description -->
           <div class="form-group">
-            <label for="phone">Total Amount</label>
-            <input
-              type="text"
-              id="totalamount"
-              class="form-control"
-              formControlName="totalamount"
-              placeholder="e.g.3000"
-            >
-          </div>
-        </div>
-
-
-
-      
-          <!-- Email -->
-          <div class="form-group">
-        
-
-             <label for="description">Description</label>
-
-              <textarea
+            <label for="description">{{ 'QUOTATIONS.DESCRIPTION' | translate }}</label>
+            <textarea
               type="text"
               id="description"
               class="form-control"
               formControlName="description"
-              placeholder="Description"
+              [placeholder]="'QUOTATIONS.DESCRIPTION' | translate"
               rows="4"
-              ></textarea>
-          
+            ></textarea>
           </div>
 
-    
+          <!-- Quotation Items -->
+          <div class="items-section">
+            <div class="items-header">
+              <h3>{{ 'QUOTATIONS.ITEMS_SECTION_TITLE' | translate }}</h3>
+              <button type="button" class="btn btn-secondary btn-sm" (click)="addItem()">
+                {{ 'QUOTATIONS.ADD_ITEM' | translate }}
+              </button>
+            </div>
 
+            <div formArrayName="items">
+              <div
+                class="item-row"
+                *ngFor="let item of items.controls; let i = index"
+                [formGroupName]="i"
+              >
+                <div class="item-row-grid">
+                  <div class="form-group">
+                    <label>{{ 'QUOTATIONS.ITEM_TITLE' | translate }} <span class="required">*</span></label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="title"
+                      [placeholder]="'QUOTATIONS.ITEM_TITLE' | translate"
+                      [class.is-invalid]="item.get('title')?.touched && item.get('title')?.invalid"
+                    >
+                  </div>
 
+                  <div class="form-group">
+                    <label>{{ 'QUOTATIONS.DESCRIPTION' | translate }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="description"
+                      [placeholder]="'QUOTATIONS.DESCRIPTION' | translate"
+                    >
+                  </div>
 
+                  <div class="form-group">
+                    <label>{{ 'QUOTATIONS.QUANTITY' | translate }} <span class="required">*</span></label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      formControlName="quantity"
+                      min="1"
+                      (input)="calculateItemTotal(i)"
+                    >
+                  </div>
 
-        <!-- Quotation Items -->
-<div class="items-section">
-  <div class="items-header">
-    <h3>Quotation Items</h3>
-    <button type="button" class="btn btn-secondary btn-sm" (click)="addItem()">
-      + Add Item
-    </button>
-  </div>
+                  <div class="form-group">
+                    <label>{{ 'QUOTATIONS.UNIT_PRICE' | translate }} <span class="required">*</span></label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      formControlName="unitprice"
+                      min="0"
+                      step="0.01"
+                      (input)="calculateItemTotal(i)"
+                    >
+                  </div>
 
-  <div formArrayName="items">
-    <div
-      class="item-row"
-      *ngFor="let item of items.controls; let i = index"
-      [formGroupName]="i"
-    >
-      <div class="item-row-grid">
-        <div class="form-group">
-          <label>Title <span class="required">*</span></label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="title"
-            placeholder="Item title"
-            [class.is-invalid]="item.get('title')?.touched && item.get('title')?.invalid"
-          >
-        </div>
+                  <div class="form-group">
+                    <label>{{ 'QUOTATIONS.TOTAL' | translate }}</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="totalprice"
+                      readonly
+                    >
+                  </div>
 
-        <div class="form-group">
-          <label>Description</label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="description"
-            placeholder="Description"
-          >
-        </div>
+                  <div class="form-group item-remove">
+                    <button
+                      type="button"
+                      class="btn btn-icon-danger"
+                      (click)="removeItem(i)"
+                      [disabled]="items.length === 1"
+                      [title]="'QUOTATIONS.REMOVE_ITEM' | translate"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        <div class="form-group">
-          <label>Quantity <span class="required">*</span></label>
-          <input
-            type="number"
-            class="form-control"
-            formControlName="quantity"
-            min="1"
-            (input)="calculateItemTotal(i)"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Unit Price <span class="required">*</span></label>
-          <input
-            type="number"
-            class="form-control"
-            formControlName="unitprice"
-            min="0"
-            step="0.01"
-            (input)="calculateItemTotal(i)"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Total</label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="totalprice"
-            readonly
-          >
-        </div>
-
-        <div class="form-group item-remove">
-          <button
-            type="button"
-            class="btn btn-icon-danger"
-            (click)="removeItem(i)"
-            [disabled]="items.length === 1"
-            title="Remove item"
-          >
-            ✕
-          </button>
-        </div>
+          <!-- Form Actions -->
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" (click)="cancel()">{{ 'QUOTATIONS.CANCEL' | translate }}</button>
+            <button type="submit" class="btn btn-primary" [disabled]="isSaving">
+              <span class="spinner" *ngIf="isSaving"></span>
+              <span *ngIf="!isSaving">{{ (isEditMode ? 'QUOTATIONS.UPDATE' : 'QUOTATIONS.CREATE') | translate }}</span>
+              <span *ngIf="isSaving">{{ 'QUOTATIONS.SAVING' | translate }}</span>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
-  </div>
-</div>
-
-
-
-
-
-        <!-- Form Actions -->
-        <div class="form-actions">
-          <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
-          <button type="submit" class="btn btn-primary" [disabled]="isSaving">
-            <span class="spinner" *ngIf="isSaving"></span>
-            <span *ngIf="!isSaving">{{ isEditMode ? 'Update Quotation' : 'Create Quotation' }}</span>
-            <span *ngIf="isSaving">Saving...</span>
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
 
   <!-- Loading state -->
   <div class="card" *ngIf="isLoading">
     <div class="card-body loading-state">
       <div class="spinner-large"></div>
-      <p>Loading Quotation details...</p>
+      <p>{{ 'COMMON.LOADING_QUOTATION' | translate }}</p>
     </div>
   </div>
 </div>
@@ -321,28 +287,26 @@
   {{ toastMessage }}
 </div>
 
-
-
 <!-- AI Suggestion Drawer -->
 <div class="drawer-overlay" *ngIf="showAiDrawer" (click)="closeAiDrawer()"></div>
 
 <div class="ai-drawer" [class.open]="showAiDrawer">
   <div class="ai-drawer-header">
-    <h3>✨ AI Quotation Assistant</h3>
+    <h3>✨ {{ 'QUOTATIONS.AI_DRAWER_TITLE' | translate }}</h3>
     <button class="btn-close-drawer" (click)="closeAiDrawer()">✕</button>
   </div>
 
   <div class="ai-drawer-body">
     <!-- Prompt Input -->
     <div class="ai-input-section">
-      <label for="aiPrompt">Describe the quotation you need</label>
+      <label for="aiPrompt">{{ 'QUOTATIONS.AI_PROMPT_LABEL' | translate }}</label>
       <textarea
         id="aiPrompt"
         class="form-control"
         rows="4"
         [(ngModel)]="aiPrompt"
         [ngModelOptions]="{standalone: true}"
-        placeholder="e.g. Private dining catering for 10 guests, 3-course dinner with icecream pairing"
+        [placeholder]="'QUOTATIONS.AI_PROMPT_PLACEHOLDER' | translate"
       ></textarea>
 
       <button
@@ -351,8 +315,8 @@
         [disabled]="isGeneratingAi || !aiPrompt.trim()"
       >
         <span class="spinner-sm" *ngIf="isGeneratingAi"></span>
-        <span *ngIf="!isGeneratingAi">Generate Suggestion</span>
-        <span *ngIf="isGeneratingAi">Generating...</span>
+        <span *ngIf="!isGeneratingAi">{{ 'QUOTATIONS.AI_GENERATE' | translate }}</span>
+        <span *ngIf="isGeneratingAi">{{ 'QUOTATIONS.AI_GENERATING' | translate }}</span>
       </button>
     </div>
 
@@ -365,21 +329,23 @@
 
       <p class="ai-summary">{{ aiResponse.summary }}</p>
 
-      <h4 class="ai-section-title">Suggested Items</h4>
+      <h4 class="ai-section-title">{{ 'QUOTATIONS.AI_SUGGESTED_ITEMS' | translate }}</h4>
       <div class="ai-item-card" *ngFor="let item of aiResponse.suggested_items">
         <div class="ai-item-card-header">
           <span class="ai-item-title">{{ item.title }}</span>
-          <span class="ai-item-total">BHD{{ item.totalprice | number:'1.2-2' }}</span>
+          <span class="ai-item-total" *ngIf="item.totalprice !== null">BHD {{ item.totalprice | number:'1.2-2' }}</span>
+          <span class="ai-item-total" *ngIf="item.totalprice === null">{{ 'QUOTATIONS.AI_PRICE_TBD' | translate }}</span>
         </div>
         <p class="ai-item-desc">{{ item.description }}</p>
         <div class="ai-item-meta">
-          <span>Qty: {{ item.quantity }}</span>
-          <span>Unit Price: BHD{{ item.unitprice | number:'1.2-2' }}</span>
+          <span>{{ 'QUOTATIONS.QUANTITY' | translate }}: {{ item.quantity }}</span>
+          <span *ngIf="item.unitprice !== null">{{ 'QUOTATIONS.UNIT_PRICE' | translate }}: BHD {{ item.unitprice | number:'1.2-2' }}</span>
+          <span *ngIf="item.unitprice === null">{{ 'QUOTATIONS.AI_UNIT_PRICE_NEEDED' | translate }}</span>
         </div>
       </div>
 
       <h4 class="ai-section-title" *ngIf="aiResponse.questions_to_ask_client?.length">
-        Questions to Ask the Client
+        {{ 'QUOTATIONS.AI_QUESTIONS' | translate }}
       </h4>
       <ul class="ai-questions-list">
         <li *ngFor="let q of aiResponse.questions_to_ask_client">{{ q }}</li>
@@ -387,14 +353,14 @@
     </div>
 
     <div class="ai-empty-state" *ngIf="!aiResponse && !isGeneratingAi">
-      <p>Describe your project above and click <strong>Generate Suggestion</strong> to get AI-recommended quotation items.</p>
+      <p>{{ 'QUOTATIONS.AI_EMPTY_STATE' | translate }}</p>
     </div>
   </div>
 
   <div class="ai-drawer-footer" *ngIf="aiResponse">
-    <button class="btn btn-secondary" (click)="regenerateAiSuggestion()">Regenerate</button>
+    <button class="btn btn-secondary" (click)="regenerateAiSuggestion()">{{ 'QUOTATIONS.AI_REGENERATE' | translate }}</button>
     <button class="btn btn-primary" (click)="addAiSuggestionsToQuotation()">
-      Add to Quotation
+      {{ 'QUOTATIONS.AI_ADD_TO_QUOTATION' | translate }}
     </button>
   </div>
 </div>

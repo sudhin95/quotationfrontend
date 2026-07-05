@@ -4,17 +4,21 @@ import { RouterModule } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { HeaderComponent } from './header/header.component';
+import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
     LayoutComponent,
     SidebarComponent,
-    HeaderComponent
+    HeaderComponent,
+    LanguageSwitcherComponent   
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    TranslateModule   
   ],
-  exports: [LayoutComponent]
+  exports: [LayoutComponent,HeaderComponent]
 })
 export class LayoutModule { }
