@@ -1,8 +1,8 @@
     export const environment = {
   production: false,
 
-  // apiUrl: 'https://quotationbackend.onrender.com/',
-   apiUrl: 'http://localhost:5200/',
+  apiUrl: 'https://quotationbackend.onrender.com/',
+  //  apiUrl: 'http://localhost:5200/',
 
   appName: 'Quotation Management System',
 
