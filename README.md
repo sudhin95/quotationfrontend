@@ -9,6 +9,10 @@ Angular application for managing client quotations — create, edit, view, and p
 - **HTTP:** Angular `HttpClient`
 - **Styling:** Custom CSS (no UI framework — hand-written styles, Bootstrap-inspired class naming only)
 
+## Test Credentials
+username= admin@quotation.com
+password= Password123
+
 ## Project Structure
 
 ```
