@@ -60,8 +60,8 @@ Navigate to `http://localhost:4200`.
 ### Quotation List
 - Search by quotation number, phone, email, or title.
 - Filter by **status**, **quotation date**, and **created date** (filter panel toggled via the Filters button next to the quotation count).
-- Status shown as color-coded badges: Draft (yellow), Sent (blue), Approved (green), Rejected (red).
-- Each row links to a read-only **View** page; Edit and Delete actions available per row.
+- Status shown as color-coded badges: Draft (grey), Sent (yellow), Approved (green), Rejected (red).
+- Each row links to a **View** page where we can edit and print; Edit and Delete actions available per row.
 
 ### Quotation Form (Create / Edit)
 - Client selection auto-fills email and phone from the selected company.
@@ -79,9 +79,6 @@ Navigate to `http://localhost:4200`.
 - Draft → Sent → Approved / Rejected.
 - When a quotation is marked **Approved**, the backend triggers an n8n workflow that emails the client and/or posts a Slack/Discord notification. This happens automatically — no manual step required from the frontend once the status is saved.
 
-## Important CSS Note: Print Styles Must Be Global
-
-Angular's view encapsulation scopes component CSS to that component's template. Print rules that target `body` (e.g. `body * { visibility: hidden; }`) **do not work** if placed inside a component's `.css` file, since `<body>` is outside Angular's control. All print-related CSS (`.print-only`, `@media print` rules referencing `body`) must live in the global `src/styles.css`, not in any component stylesheet. See `quotation-view.component.css` for the scoped styles that do work at the component level.
 
 ## Localization (Arabic / RTL)
 
@@ -90,7 +87,4 @@ If adding Arabic support:
 - RTL layout requires explicit CSS overrides (e.g. `html[dir="rtl"] .page-header { flex-direction: row-reverse; }`) since this project does not use Bootstrap's RTL stylesheet.
 - The AI prompt supports a language parameter so quotation drafts can be generated in Arabic as well as English.
 
-## Known Field Naming Notes
 
-- Backend status labels: `0 = Draft`, `1 = Sent`, `2 = Approved`, `3 = Rejected` (as returned by `getAllQuotations`). Double-check any place using `Pending` instead of `Sent` for status `1` — these have appeared inconsistently between the form and list views and should be aligned to one label.
-- Currency values are in **BHD**, displayed with 3 decimal places, not 2.
