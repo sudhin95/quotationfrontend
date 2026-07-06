@@ -192,6 +192,17 @@
     "EDIT_CLIENT": "تعديل العميل",
     "CLIENTS": "العملاء",
     "QUOTATIONS": "عروض الأسعار"
+  },
+    "DASHBOARD": {
+    "GREETING_MORNING": "صباح الخير",
+    "GREETING_AFTERNOON": "مساء الخير",
+    "GREETING_EVENING": "مساء الخير",
+    "DEFAULT_USER": "المستخدم",
+    "WELCOME_TEXT": "مرحبًا بك في منشئ عروض الأسعار. هذه نظرة سريعة على مساحة عملك.",
+    "TOTAL_CLIENTS": "إجمالي العملاء",
+    "QUOTATIONS": "عروض الأسعار",
+    "APPROVED": "معتمد",
+    "TOTAL_AMOUNT": "المبلغ الإجمالي"
   }
 
 }

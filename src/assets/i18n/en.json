@@ -194,5 +194,17 @@
     "EDIT_CLIENT": "Edit Client",
     "CLIENTS": "Clients",
     "QUOTATIONS": "Quotations"
+  },
+    "DASHBOARD": {
+    "GREETING_MORNING": "Good morning",
+    "GREETING_AFTERNOON": "Good afternoon",
+    "GREETING_EVENING": "Good evening",
+    "DEFAULT_USER": "User",
+    "WELCOME_TEXT": "Welcome to your Quotation Builder. Here's a quick overview of your workspace.",
+    "TOTAL_CLIENTS": "Total Clients",
+    "QUOTATIONS": "Quotations",
+    "APPROVED": "Approved",
+    "TOTAL_AMOUNT": "Total Amount"
   }
+
 }
